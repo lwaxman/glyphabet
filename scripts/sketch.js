@@ -16,7 +16,8 @@ var colourPicker = function( colour ) {
   };
 
   colour.mousePressed = function(){
-  	chosenColour = colour.get(mouseX, mouseY);
+  	var colour = colour.get(mouseX, mouseY);
+  	chosenColour  = colour;
   	console.log(chosenColour);
   }
 
