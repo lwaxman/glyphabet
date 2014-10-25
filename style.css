@@ -1,0 +1,24 @@
+body{
+	margin: 0;
+}
+
+#defaultCanvas{
+	border: 2px solid #ddd;
+	position: relative;
+	display: inline-block;
+}
+
+.create{
+	margin: 0;
+	position: relative;	
+	display: inline-block;
+	background: blue;
+	width: 292px;
+	height: 1000px;
+	vertical-align: top;
+}
+
+.colorpicker{
+	position: absolute;
+	left: 0px;
+}
