@@ -2,10 +2,11 @@ body{
 	margin: 0;
 }
 
-#defaultCanvas{
+canvas{
 	border: 2px solid #ddd;
 	position: relative;
 	display: inline-block;
+	visibility: visible;
 }
 
 .create{

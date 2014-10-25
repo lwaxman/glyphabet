@@ -1,25 +1,46 @@
 var canvasWidth = $(window).width() - 300;
 var canvasHeight = $(window).height();
+var chosenColour; 
 
-function setup(){
-	createCanvas(canvasWidth, canvasHeight);
-	noLoop();
+/////////////////////////////////////////////////////////////////////////////////////////// colour picker
+
+var colourPicker = function( colour ) {
+  colour.setup = function() {
+  	colour.background(0,255,0);
+  };
+
+  colour.draw = function() {
+
+    colour.fill(chosenColour);
+    colour.rect(10,10,50,50);
+  };
+
+  colour.mousePressed = function(){
+  	chosenColour = colour.get(mouseX, mouseY);
+  	console.log(chosenColour);
+  }
+
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////// canvas
+
+var dropCanvas = function (sketch){
+
+	sketch.setup = function() {
+		sketch.background(255,0,0);
+		sketch.createCanvas(canvasWidth, canvasHeight);
+		sketch.noLoop();
+	};
+
+	sketch.draw = function(){
+		sketch.textFont("Helvetica");
+		var myLetter = "b";
+		sketch.textSize(750);
+		sketch.fill(chosenColour);
+		sketch.text(myLetter, (canvasWidth/2)-200, 750);
+	};
+	
 }
 
-function draw(){
-	textFont("Helvetica");
-	var myLetter = "b";
-	textSize(750);
-	text(myLetter, (canvasWidth/2)-200, 750);
-
-}
-
-
-
-function getFontSize(thisText){
-	var text = thisText.split("");
-	console.log(text.length);
-	var size = (canvasWidth-100 / text.length) / (text.length/2) ;
-	console.log(size);
-	return size;
-}
+var myColourCanvas = new p5(colourPicker, 'here');
+var mySketchCanvas = new p5(dropCanvas);
