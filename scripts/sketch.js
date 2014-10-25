@@ -1,7 +1,5 @@
 var canvasWidth = $(window).width() - 300;
 var canvasHeight = $(window).height();
-$('#colorpickerHolder').ColorPicker({flat: true});
-$('.create').ColorPicker({});
 
 function setup(){
 	createCanvas(canvasWidth, canvasHeight);
