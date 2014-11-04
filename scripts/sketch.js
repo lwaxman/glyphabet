@@ -1,47 +1,77 @@
-var canvasWidth = $(window).width() - 300;
+var canvasWidth = $(window).width();
 var canvasHeight = $(window).height();
-var chosenColour; 
+var pgTextColour;
+var pg;
+var myType = "TYPE";
+var insideText = false;
+var mode = "squares";
+var minSize = 10;
+var maxSize = 20;
 
-/////////////////////////////////////////////////////////////////////////////////////////// colour picker
 
-var colourPicker = function( colour ) {
-  colour.setup = function() {
-  	colour.background(0,255,0);
-  };
+$( "#slider-range" ).slider({
+	range: true,
+	min: 0,
+	max: 40,
+	values: [ 10, 20 ],
+	slide: function( event, ui ) {
+		$( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+		minSize = ui.values[0];
+		maxSize = ui.values[1];
+		draw();
+	}
+});
 
-  colour.draw = function() {
+$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) + " - " + $( "#slider-range" ).slider( "values", 1 ) );
 
-    colour.fill(chosenColour);
-    colour.rect(10,10,50,50);
-  };
 
-  colour.mousePressed = function(){
-  	var colour = colour.get(mouseX, mouseY);
-  	chosenColour  = colour;
-  	console.log(chosenColour);
-  }
-
-};
 
 /////////////////////////////////////////////////////////////////////////////////////////// canvas
 
-var dropCanvas = function (sketch){
-
-	sketch.setup = function() {
-		sketch.background(255,0,0);
-		sketch.createCanvas(canvasWidth, canvasHeight);
-		sketch.noLoop();
-	};
-
-	sketch.draw = function(){
-		sketch.textFont("Helvetica");
-		var myLetter = "b";
-		sketch.textSize(750);
-		sketch.fill(chosenColour);
-		sketch.text(myLetter, (canvasWidth/2)-200, 750);
-	};
-	
+function setup(){
+	pgTextColour = color(0);
+	createCanvas(800, 800);
+	pg = createGraphics(800,800);
+	pg.background(255);
+	pg.noStroke();
+	pg.fill(0);
+	pg.textSize(250);
+	pg.textAlign(CENTER);
+	pg.text(myType, 400, 500);
 }
 
-var myColourCanvas = new p5(colourPicker, 'here');
-var mySketchCanvas = new p5(dropCanvas);
+function draw(){
+	background(255);	
+	noLoop();
+	stroke(255);
+	// image(pg, 100, 100);
+	for (var i=0; i<3000; i++) {
+		var xPos = random(800);
+		var yPos = random(200, 600);
+		var fillColour = pg.get(xPos, yPos);
+		var ellipseSize = random(minSize, maxSize);
+		if( fillColour[0] == 0 ){
+			console.log("match");
+			fill(0);
+			drawMode(xPos, yPos, ellipseSize, ellipseSize);
+		}
+		// var insideText = (== pgTextColour);
+
+	}
+}
+
+function drawMode(x, y, elementWidth, elementHeight){
+	if(mode=="circles"){
+		ellipse(x, y, elementWidth, elementHeight);
+	}else if(mode == "squares"){
+		rect(x, y, elementWidth, elementHeight);
+	}else if(mode == "weirdoCircle3D"){
+		for(var back=20; back>0; back--){
+			stroke(255-(back*10));
+			ellipse(x-back, y-back, elementWidth, elementHeight);
+		}
+		ellipse(x, y, elementWidth, elementHeight);
+	}else if(mode == "normal3D"){
+		text(myType, 400, 500);
+	}
+}

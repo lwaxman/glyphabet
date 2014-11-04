@@ -1,9 +1,11 @@
 body{
 	margin: 0;
+	padding: 0;
 }
 
 canvas{
-	border: 2px solid #ddd;
+	margin: 0 auto;
+	border: 2px solid #eee;
 	position: relative;
 	display: inline-block;
 	visibility: visible;
@@ -22,4 +24,9 @@ canvas{
 .colorpicker{
 	position: absolute;
 	left: 0px;
+}
+
+
+#slider-range{
+	width: 200px;
 }
