@@ -18,6 +18,7 @@ var minSize = 10;
 var maxSize = 20;
 var textSize = 100;
 var gridSize = 50;
+var textFillColour;
 
 $("#gridCircles").on("click", function(){ 
 	drawGridCircles(); 
@@ -224,6 +225,7 @@ $('#colourTextBox').on('input', function() {
 	colourBoxColour = $("#colourTextBox").val();
 	var rgbFillString = "color("+hexToRgb(colourBoxColour).r +","+hexToRgb(colourBoxColour).g +","+hexToRgb(colourBoxColour).b +")"
 	console.log(rgbFillString);
+	return fillColour = rgbFillString;
 });
 
 // hexToRgb("#0033ff").g 
