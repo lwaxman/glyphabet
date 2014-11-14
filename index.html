@@ -15,12 +15,35 @@
 	</head>
 
 	<body>
-		<p>
-			<label for="amount">circle size:</label>
-			<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-		</p>
-		<div id="slider-range"></div>
+		<div class="styleControls">
+			<p id="gridCircles">GRID_CIRCLES</p>
+			<p id="randoCircles">RANDO_CIRCLES</p>
+			<p id="weirdoCircles">WEIRDO_CIRCLES</p>
+			<p id="randoSquares">RANDO_SQUARES</p>
+			<p id="gridSquares">GRID_SQUARES</p>
+		</div>
+		<div id="slider1">
+			<p>
+				<label for="shapeSize">circle size:</label>
+				<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="shapeSize-range"></div>
+		</div>
+
+		<div id="slider2">
+			<p>
+				<label for="gridSize">grid size:</label>
+				<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="gridSize-range"></div>
+		</div>
+
+		<input class="color" id="colourTextBox" value="66ff00">
+
+		<script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
 		<script type="text/javascript" src="scripts/sketch.js"></script>
+
+
 	</body>
 
 </html>

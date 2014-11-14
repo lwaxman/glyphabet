@@ -11,6 +11,10 @@ canvas{
 	visibility: visible;
 }
 
+#slider1 input#shapeSize{
+	color: blue;
+}
+
 .create{
 	margin: 0;
 	position: relative;	
@@ -27,6 +31,25 @@ canvas{
 }
 
 
-#slider-range{
+#shapeSize-range,
+#gridSize-range{
 	width: 200px;
+	height: 19px;
+	background: #eee;
+	border: none;
+}
+
+#gridSize-range .ui-slider-range,
+#shapeSize-range .ui-slider-range{ 
+	background: #A30A9E; 
+}
+
+#gridSize-range .ui-slider-handle,
+#shapeSize-range .ui-slider-handle{ 
+	margin-top: 4px;
+	border: 1px solid #A30A9E; 
+}
+
+@media (max-width: 600px) {
+	
 }
