@@ -8,7 +8,8 @@
 		<link rel="stylesheet" href="style.css">
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.10/p5.min.js"></script>
-
+		
+		<link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
@@ -21,24 +22,26 @@
 			<p id="weirdoCircles">WEIRDO_CIRCLES</p>
 			<p id="randoSquares">RANDO_SQUARES</p>
 			<p id="gridSquares">GRID_SQUARES</p>
-		</div>
-		<div id="slider1">
-			<p>
-				<label for="shapeSize">circle size:</label>
-				<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
-			</p>
-			<div id="shapeSize-range"></div>
+
+			<div id="slider1">
+				<p>
+					<label for="shapeSize">circle size:</label>
+					<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div id="shapeSize-range"></div>
+			</div>
+
+			<div id="slider2">
+				<p>
+					<label for="gridSize">grid size:</label>
+					<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div id="gridSize-range"></div>
+			</div>
+
+			<input class="color" id="colourTextBox" value="66ff00">
 		</div>
 
-		<div id="slider2">
-			<p>
-				<label for="gridSize">grid size:</label>
-				<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
-			</p>
-			<div id="gridSize-range"></div>
-		</div>
-
-		<input class="color" id="colourTextBox" value="66ff00">
 
 		<script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
 		<script type="text/javascript" src="scripts/sketch.js"></script>

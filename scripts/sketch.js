@@ -19,6 +19,8 @@ var maxSize = 20;
 var textSize = 100;
 var gridSize = 50;
 var textFillColour;
+var xOffset;
+var yOffset;
 
 $("#gridCircles").on("click", function(){ 
 	drawGridCircles(); 
@@ -70,15 +72,16 @@ $("#gridSize").val( $("#gridSize-range").slider("values",0) + " - " + $("#gridSi
 /////////////////////////////////////////////////////////////////////////////////////////// canvas
 
 function setup(){
+	textFillColour = color(0,0,0);
 	pgTextColour = color(0);
-	createCanvas(800, 800);
-	pg = createGraphics(800,800);
+	createCanvas(canvasWidth, canvasWidth);
+	pg = createGraphics(canvasWidth,800);
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textSize(getTextSize());
 	pg.textAlign(CENTER);
-	pg.text(myType, 400, 500);
+	pg.text(myType, canvasWidth/2, 500);
 }
 
 function draw(){
@@ -103,18 +106,18 @@ function draw(){
 function getTextSize(){
 	var textArray = myType.split("");
 	var textLength = textArray.length;
-	textSize = (canvasWidth/textLength)*0.8;
+	textSize = (canvasWidth/textLength)*1.2;
 	return textSize;
 }
 
 function drawGridCircles(){
 	background(255);
 	noStroke();
-	fill(0);
+	fill(textFillColour);
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
-			var yPos = y * (width/gridSize);
+			var yPos = y * (800/gridSize);
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minSize, maxSize);
 			if( textColour[0] == 0 ){
@@ -127,9 +130,9 @@ function drawGridCircles(){
 function drawRandoCircles(){
 	background(255);
 	stroke(255);
-	fill(0);
+	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
-		var xPos = random(800);
+		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
 		var textColour = pg.get(xPos, yPos);
 		var shapeSize = random(minSize, maxSize);
@@ -142,9 +145,9 @@ function drawRandoCircles(){
 function drawWeirdoCircles(){
 	background(255);
 	stroke(255);
-	fill(0);
+	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
-		var xPos = random(800);
+		var xPos = random(canvasWidth);
 		var yPos = random(200, 600);
 		var textColour = pg.get(xPos, yPos);
 		var shapeSize = random(minSize, maxSize);
@@ -162,11 +165,11 @@ function drawWeirdoCircles(){
 function drawGridSquares(){
 	background(255);
 	noStroke();
-	fill(0);
+	fill(textFillColour);
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
-			var yPos = y * (width/gridSize);
+			var yPos = y * (800/gridSize);
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minSize, maxSize);
 			if( textColour[0] == 0 ){
@@ -179,9 +182,9 @@ function drawGridSquares(){
 function drawRandoSquares(){
 	background(255);
 	stroke(255);
-	fill(0);
+	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
-		var xPos = random(800);
+		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
 		var textColour = pg.get(xPos, yPos);
 		var shapeSize = random(minSize, maxSize);
@@ -221,11 +224,14 @@ function hexToRgb(hex) {
 }
 
 
-$('#colourTextBox').on('input', function() { 
+$('#colourTextBox').on('change', function() { 
 	colourBoxColour = $("#colourTextBox").val();
-	var rgbFillString = "color("+hexToRgb(colourBoxColour).r +","+hexToRgb(colourBoxColour).g +","+hexToRgb(colourBoxColour).b +")"
-	console.log(rgbFillString);
-	return fillColour = rgbFillString;
+	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b);
+	textFillColour = rgbFillColour;
+	console.log(textFillColour);
+	draw();
+	return textFillColour;
+	// return fillColour = rgbFillString;
 });
 
 // hexToRgb("#0033ff").g 
