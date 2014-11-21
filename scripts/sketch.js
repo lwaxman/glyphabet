@@ -32,6 +32,25 @@ var textFillColour;
 var xOffset;
 var yOffset;
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// SETUP
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function setup(){
+	textFillColour = color(230,255,0, 150);
+	// pgTextColour = color(0);
+
+	//draw word to pgraphic 
+	createCanvas(canvasWidth, canvasHeight);
+	pg = createGraphics(canvasWidth,800);
+	pg.background(255);
+	pg.noStroke();
+	pg.fill(0);
+	pg.textSize(getTextSize());
+	pg.textAlign(CENTER);
+	pg.text(myType, canvasWidth/2, 500);
+	currentLayer = new Layer();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
@@ -54,7 +73,7 @@ $("#randoSquares").on("click", function(){
 	return style = "randoSquares";
 });
 $("#gridSquares").on("click", function(){ 
-	drawGridSquares();; 
+	drawGridSquares();
 	return style = "gridSquares";
 });
 
@@ -92,33 +111,28 @@ $("#gridSize").val( $("#gridSize-range").slider("values",0) + " - " + $("#gridSi
 //////////////////////////////////////////////////////////////////////////////////////////////// CANVAS P5JS
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-function setup(){
-	textFillColour = color(230,255,0);
-	// pgTextColour = color(0);
 
-	//draw word to pgraphic 
-	createCanvas(canvasWidth, canvasHeight);
-	pg = createGraphics(canvasWidth,800);
-	pg.background(255);
-	pg.noStroke();
-	pg.fill(0);
-	pg.textSize(getTextSize());
-	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, 500);
-}
 
 function draw(){
+
 	background(255);	
 	noLoop();
 
 	layerOne = new Layer();
-	layerOne.colour = textFillColour;
-	layerOne.display();
 
 	layerTwo = new Layer();
 	layerTwo.styleMode = "gridCircles";
 	layerTwo.colour = color(0,100,255,150);
 	layerTwo.display();
+
+	currentLayer = layerTwo;
+	currentLayer.styleMode = "gridCircles";
+	currentLayer.colour = textFillColour;
+	currentLayer.grid = gridSize;
+	currentLayer.minShapeSize = minSize;
+	currentLayer.maxShapeSize = maxSize;
+	currentLayer.stroke = false;
+	currentLayer.display();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,20 +144,6 @@ function getTextSize(){
 	var textLength = textArray.length;
 	textSize = (canvasWidth/textLength)*1.2;
 	return textSize;
-}
-
-function drawGridCircles(thisFillColour){
-	for (var x=0; x<gridSize; x++) {
-		for(var y=0; y<gridSize; y++){
-			var xPos = x * (width/gridSize);
-			var yPos = y * (width/gridSize);
-			var textColour = pg.get(xPos, yPos);
-			var shapeSize = random(minSize, maxSize);
-			if( textColour[0] == 0 ){
-				ellipse(xPos, yPos, shapeSize, shapeSize);
-			}
-		}
-	}
 }
 
 function drawRandoCircles(){
@@ -175,13 +175,13 @@ function drawWeirdoCircles(){
 	}
 }
 
-function drawGridSquares(){
-	for (var x=0; x<gridSize; x++) {
-		for(var y=0; y<gridSize; y++){
-			var xPos = x * (width/gridSize);
-			var yPos = y * (width/gridSize);
+function drawGridSquares(thisGridSize, minShapeSize, maxShapeSize){
+	for (var x=0; x<thisGridSize; x++) {
+		for(var y=0; y<thisGridSize; y++){
+			var xPos = x * (width/thisGridSize);
+			var yPos = y * (width/thisGridSize);
 			var textColour = pg.get(xPos, yPos);
-			var shapeSize = random(minSize, maxSize);
+			var shapeSize = random(minShapeSize, maxShapeSize);
 			if( textColour[0] == 0 ){
 				rect(xPos, yPos, shapeSize, shapeSize);
 			}
@@ -201,6 +201,21 @@ function drawRandoSquares(){
 	}
 }
 
+
+function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize){
+	for (var x=0; x<thisGridSize; x++) {
+		for(var y=0; y<thisGridSize; y++){
+			var xPos = x * (width/thisGridSize);
+			var yPos = y * (width/thisGridSize);
+			var textColour = pg.get(xPos, yPos);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			if( textColour[0] == 0 ){
+				ellipse(xPos, yPos, shapeSize, shapeSize);
+			}
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// CLASS LAYER
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,32 +223,39 @@ function drawRandoSquares(){
 function Layer() {
 	this.xOffset;
 	this.yOffset;
-	this.styleMode;
+	this.styleMode = "gridSquares";
 	this.font;
 	this.colour;
-	this.grid;
+	this.grid = 80;
+	this.stroke;
+	this.minShapeSize = 5;
+	this.maxShapeSize = 10;
 
 	this.display = function(){
+		if(this.stroke){
+			stroke(100);
+		}else{
+			noStroke();
+		}
+
 		if(this.styleMode=="gridCircles"){
-			// fill(this.colour);
-			// ellipse(100,100,100,100);
 			fill(this.colour);
-			drawGridCircles();
+			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize);
 		}else if(this.styleMode=="randoCircles"){
 			drawRandoCircles();
 		}else if(this.styleMode=="weirdoCircles"){
 			drawWeirdoCircles();
 		}else if(this.styleMode=="gridSquares"){
-			drawGridSquares();
+			fill(this.colour);
+			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize);
 		}else if(this.styleMode=="randoSquares"){
 			drawRandoSquares();
 		}else{
-			// fill(this.colour);
-			noStroke();
 			fill(this.colour);
-			drawRandoSquares();
+			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize);
 		}
-	}//end drawLayer()
+	}
+
 
 }//end class Layer
 
@@ -258,7 +280,7 @@ function hexToRgb(hex) {
 
 function getColour(){
 	colourBoxColour = $("#colourTextBox").val();
-	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b);
+	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, 150);
 	textFillColour = rgbFillColour;
 	console.log(textFillColour);
 	draw();
