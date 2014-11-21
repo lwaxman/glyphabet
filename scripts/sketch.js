@@ -117,7 +117,7 @@ function drawGridCircles(){
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
-			var yPos = y * (800/gridSize);
+			var yPos = y * (width/gridSize);
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minSize, maxSize);
 			if( textColour[0] == 0 ){
@@ -169,7 +169,7 @@ function drawGridSquares(){
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
-			var yPos = y * (800/gridSize);
+			var yPos = y * (width/gridSize);
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minSize, maxSize);
 			if( textColour[0] == 0 ){
@@ -194,14 +194,23 @@ function drawRandoSquares(){
 	}
 }
 
-function Layer() {
-  this.x = 200;
-  this.y = 500;
-  this.style = textMode;
-  this.font = textFont;
-  this.colour = textColour;
-  this.shape = textStyleShape;
-}
+// function Layer() {
+//   this.xOffset = 200;
+//   this.yOffset = 500;
+//   this.style = textMode;
+//   this.font = textFont;
+//   this.colour = textColour;
+//   this.shape = textStyleShape;
+// }
+
+// layerOne = new Layer();
+// layerOne.xOffset = 200;
+// layerOne.yOffset = 500;
+// layerOne.style = textMode;
+// layerOne.font = textFont;
+// layerOne.colour = textColour;
+// layerOne.shape = textStyleShape;
+
 
 //LOGIC? 
 // thisLayer = layerOne; 
