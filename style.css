@@ -16,6 +16,24 @@ canvas{
 	color: blue;
 }
 
+.styleControls{
+	background: #BEDDE4;
+	width: 300px;
+	display: inline-block;
+	height: 800px;
+	vertical-align: top;
+	text-align: center;
+}
+
+.styleControls div{
+	width: 200px;
+	margin: 0 auto;
+}
+
+div.styleMode{
+	padding: 5px 0;
+}
+
 .create{
 	margin: 0;
 	position: relative;	

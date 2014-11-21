@@ -5,15 +5,25 @@
 * Colour picker courtesy of http://jscolor.com/
 * Hex to RGB function courtsey of http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 *
+	TO DO: 
+		seperate layers (currentLayer = layerOne, etc)
+		select layer
+		add new layer
+		array of layers?
+		normal style
+		position layer
+		add new line of text
+		fix check for black area
+*
 */
 
-var canvasWidth = $(window).width();
-var canvasHeight = $(window).height();
-var pgTextColour;
+var canvasWidth = $(window).width() - 310;
+var canvasHeight = $(window).height() - 10;
+// var pgTextColour;
 var pg;
 var myType = "TEXT";
 var insideText = false;
-var textMode = "randoCircles";
+var style = "randoCircles";
 var minSize = 10;
 var maxSize = 20;
 var textSize = 100;
@@ -22,26 +32,35 @@ var textFillColour;
 var xOffset;
 var yOffset;
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 $("#gridCircles").on("click", function(){ 
 	drawGridCircles(); 
-	return textMode = "gridCircles";
+	return style = "gridCircles";
 });
 $("#randoCircles").on("click", function(){ 
 	drawCircles(); 
-	return textMode = "randoCircles";
+	return style = "randoCircles";
 });
 $("#weirdoCircles").on("click", function(){ 
 	drawWeirdoCircles(); 
-	return textMode = "weirdoCircles";
+	return style = "weirdoCircles";
 });
 $("#randoSquares").on("click", function(){ 
 	drawRandoSquares(); 
-	return textMode = "randoSquares";
+	return style = "randoSquares";
 });
 $("#gridSquares").on("click", function(){ 
 	drawGridSquares();; 
-	return textMode = "gridSquares";
+	return style = "gridSquares";
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// SLIDERS
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 $("#shapeSize-range").slider({
 	range: true,
@@ -69,12 +88,16 @@ $("#gridSize-range").slider({
 });
 $("#gridSize").val( $("#gridSize-range").slider("values",0) + " - " + $("#gridSize-range").slider("values",1)  );
 
-/////////////////////////////////////////////////////////////////////////////////////////// canvas
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// CANVAS P5JS
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 function setup(){
-	textFillColour = color(0,0,0);
-	pgTextColour = color(0);
-	createCanvas(canvasWidth, canvasWidth);
+	textFillColour = color(230,255,0);
+	// pgTextColour = color(0);
+
+	//draw word to pgraphic 
+	createCanvas(canvasWidth, canvasHeight);
 	pg = createGraphics(canvasWidth,800);
 	pg.background(255);
 	pg.noStroke();
@@ -87,21 +110,20 @@ function setup(){
 function draw(){
 	background(255);	
 	noLoop();
-	if(textMode=="gridCircles"){
-		drawGridCircles();
-	}else if(textMode=="randoCircles"){
-		drawRandoCircles();
-	}else if(textMode=="weirdoCircles"){
-		drawWeirdoCircles();
-	}else if(textMode=="gridSquares"){
-		drawGridSquares();
-	}else if(textMode=="randoSquares"){
-		drawRandoSquares();
-	}else{
-		drawGridCircles();
-	}
-	
+
+	layerOne = new Layer();
+	layerOne.colour = textFillColour;
+	layerOne.display();
+
+	layerTwo = new Layer();
+	layerTwo.styleMode = "gridCircles";
+	layerTwo.colour = color(0,100,255,150);
+	layerTwo.display();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 function getTextSize(){
 	var textArray = myType.split("");
@@ -110,10 +132,7 @@ function getTextSize(){
 	return textSize;
 }
 
-function drawGridCircles(){
-	background(255);
-	noStroke();
-	fill(textFillColour);
+function drawGridCircles(thisFillColour){
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
@@ -128,9 +147,6 @@ function drawGridCircles(){
 }
 
 function drawRandoCircles(){
-	background(255);
-	stroke(255);
-	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
@@ -143,9 +159,6 @@ function drawRandoCircles(){
 }
 
 function drawWeirdoCircles(){
-	background(255);
-	stroke(255);
-	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(200, 600);
@@ -163,9 +176,6 @@ function drawWeirdoCircles(){
 }
 
 function drawGridSquares(){
-	background(255);
-	noStroke();
-	fill(textFillColour);
 	for (var x=0; x<gridSize; x++) {
 		for(var y=0; y<gridSize; y++){
 			var xPos = x * (width/gridSize);
@@ -180,9 +190,6 @@ function drawGridSquares(){
 }
 
 function drawRandoSquares(){
-	background(255);
-	stroke(255);
-	fill(textFillColour);
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
@@ -194,29 +201,46 @@ function drawRandoSquares(){
 	}
 }
 
-// function Layer() {
-//   this.xOffset = 200;
-//   this.yOffset = 500;
-//   this.style = textMode;
-//   this.font = textFont;
-//   this.colour = textColour;
-//   this.shape = textStyleShape;
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// CLASS LAYER
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-// layerOne = new Layer();
-// layerOne.xOffset = 200;
-// layerOne.yOffset = 500;
-// layerOne.style = textMode;
-// layerOne.font = textFont;
-// layerOne.colour = textColour;
-// layerOne.shape = textStyleShape;
+function Layer() {
+	this.xOffset;
+	this.yOffset;
+	this.styleMode;
+	this.font;
+	this.colour;
+	this.grid;
+
+	this.display = function(){
+		if(this.styleMode=="gridCircles"){
+			// fill(this.colour);
+			// ellipse(100,100,100,100);
+			fill(this.colour);
+			drawGridCircles();
+		}else if(this.styleMode=="randoCircles"){
+			drawRandoCircles();
+		}else if(this.styleMode=="weirdoCircles"){
+			drawWeirdoCircles();
+		}else if(this.styleMode=="gridSquares"){
+			drawGridSquares();
+		}else if(this.styleMode=="randoSquares"){
+			drawRandoSquares();
+		}else{
+			// fill(this.colour);
+			noStroke();
+			fill(this.colour);
+			drawRandoSquares();
+		}
+	}//end drawLayer()
+
+}//end class Layer
 
 
-//LOGIC? 
-// thisLayer = layerOne; 
-// layerOne  = new Layer();
-// layerOne.colour = getColour();
-// thisLayer.colour = getColour();
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// COLOURS
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /*
@@ -232,16 +256,17 @@ function hexToRgb(hex) {
     } : null;
 }
 
-
-$('#colourTextBox').on('change', function() { 
+function getColour(){
 	colourBoxColour = $("#colourTextBox").val();
 	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b);
 	textFillColour = rgbFillColour;
 	console.log(textFillColour);
 	draw();
 	return textFillColour;
-	// return fillColour = rgbFillString;
-});
+	// return rgbFillColour;
+}
+
+$('#colourTextBox').on('change', getColour);
 
 // hexToRgb("#0033ff").g 
 
