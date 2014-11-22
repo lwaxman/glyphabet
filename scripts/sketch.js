@@ -37,7 +37,7 @@ var yOffset;
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 function setup(){
-	textFillColour = color(230,255,0, 150);
+	textFillColour = color(25,212,255, 150);
 	// pgTextColour = color(0);
 
 	//draw word to pgraphic 
