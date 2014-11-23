@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  margin: 0 auto;
+  border: 2px solid #eee;
+  position: relative;
+  display: inline-block;
+  visibility: visible;
+}
+#slider1 input#shapeSize {
+  color: blue;
+}
+.styleControls {
+  background: #BEDDE4;
+  width: 300px;
+  display: inline-block;
+  height: 800px;
+  vertical-align: top;
+  text-align: center;
+}
+.styleControls div {
+  width: 200px;
+  margin: 0 auto;
+}
+div.styleMode {
+  padding: 5px 0;
+}
+.create {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  background: blue;
+  width: 292px;
+  height: 1000px;
+  vertical-align: top;
+}
+.colorpicker {
+  position: absolute;
+  left: 0px;
+}
+#shapeSize-range,
+#gridSize-range {
+  width: 200px;
+  height: 19px;
+  background: #808396;
+  border: none;
+  border-radius: 10px;
+}
+#gridSize-range .ui-slider-range,
+#shapeSize-range .ui-slider-range {
+  background: #46b1f9;
+  border-radius: 10px;
+}
+#gridSize-range .ui-slider-handle,
+#shapeSize-range .ui-slider-handle {
+  margin-top: 3px;
+  background: #46b1f9;
+  border: 2px solid #3789db;
+  border-radius: 15px;
+}
+#gridSize-range .ui-state-active,
+#shapeSize-range .ui-state-active {
+  background: #46b1f9;
+  border: 2px solid #fff;
+}
+#colourTextBox {
+  border: 2px solid #c4c6d6;
+  padding: 10px;
+  width: 180px;
+  border-radius: 10px;
+}

@@ -1,7 +1,15 @@
+@lightCyan: #46b1f9;
+@darkCyan: #3789db;
+@lightFuchsia: #a853ea;
+@darkFuchsia: #8737d3;
+@lightBlue: #2d3ae4;
+@darkBlue: #0a1fc4;
+@lightGrey: #c4c6d6;
+@darkGrey: #808396;
+
 body{
 	margin: 0;
 	padding: 0;
-	/*font-family: 'Oleo Script', cursive;*/
 }
 
 canvas{
@@ -54,19 +62,36 @@ div.styleMode{
 #gridSize-range{
 	width: 200px;
 	height: 19px;
-	background: #eee;
+	background: #808396;
 	border: none;
+	border-radius: 10px;
 }
 
 #gridSize-range .ui-slider-range,
 #shapeSize-range .ui-slider-range{ 
-	background: #A30A9E; 
+	background: @lightCyan; 
+	border-radius: 10px;
 }
 
 #gridSize-range .ui-slider-handle,
 #shapeSize-range .ui-slider-handle{ 
-	margin-top: 4px;
-	border: 1px solid #A30A9E; 
+	margin-top: 3px;
+	background: @lightCyan;
+	border: 2px solid @darkCyan; 
+	border-radius: 15px;
+}
+
+#gridSize-range .ui-state-active,
+#shapeSize-range .ui-state-active{ 
+	background: @lightCyan;
+	border: 2px solid #fff;
+}
+
+#colourTextBox{
+	border: 2px solid @lightGrey;
+	padding: 10px;
+	width: 180px;
+	border-radius: 10px;
 }
 
 @media (max-width: 600px) {
