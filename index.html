@@ -16,6 +16,8 @@
 
 	<body>
 		<div class="styleControls">
+				
+			<input id="textBox" type="text" value="TEXT">
 
 			<div class="styleMode allign" id="gridCircles">GRID_CIRCLES</div>
 			<div class="styleMode allign" id="randoCircles">RANDO_CIRCLES</div>
@@ -28,7 +30,7 @@
 					<label for="shapeSize">circle size:</label>
 					<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign" id="shapeSize-range"></div>
+				<div class="allign" class="slider" id="shapeSize-range"></div>
 			</div>
 
 			<div id="slider2">
@@ -36,7 +38,23 @@
 					<label for="gridSize">grid size:</label>
 					<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign"  id="gridSize-range"></div>
+				<div class="allign" class="slider" id="gridSize-range"></div>
+			</div>
+
+			<div id="slider3">
+				<p>
+					<label for="xOffset">x-offset:</label>
+					<input type="text" id="xOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div class="allign" class="slider" id="xOffset-range"></div>
+			</div>
+
+			<div id="slider4">
+				<p>
+					<label for="yOffset">y-offset:</label>
+					<input type="text" id="yOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div class="allign" class="slider" id="yOffset-range"></div>
 			</div>
 
 			<input class="color" id="colourTextBox" value="19D9FF">

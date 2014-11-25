@@ -62,7 +62,10 @@ div.styleMode{
 
 
 #shapeSize-range,
-#gridSize-range{
+#gridSize-range,
+#xOffset-range, 
+#yOffset-range{
+// .slider{
 	width: 200px;
 	height: 19px;
 	background: #808396;
@@ -71,13 +74,17 @@ div.styleMode{
 }
 
 #gridSize-range .ui-slider-range,
-#shapeSize-range .ui-slider-range{ 
+#shapeSize-range .ui-slider-range,
+#xOffset-range .ui-slider-range,
+#yOffset-range .ui-slider-range{ 
 	background: @lightCyan; 
 	border-radius: 10px;
 }
 
 #gridSize-range .ui-slider-handle,
-#shapeSize-range .ui-slider-handle{ 
+#shapeSize-range .ui-slider-handle,
+#xOffset-range .ui-slider-handle,
+#yOffset-range .ui-slider-handle{ 
 	margin-top: 3px;
 	background: @lightCyan;
 	border: 2px solid @darkCyan; 
@@ -85,7 +92,9 @@ div.styleMode{
 }
 
 #gridSize-range .ui-state-active,
-#shapeSize-range .ui-state-active{ 
+#shapeSize-range .ui-state-active,
+#xOffset-range .ui-state-active,
+#yOffset-range .ui-state-active{ 
 	background: @lightCyan;
 	border: 2px solid #fff;
 }

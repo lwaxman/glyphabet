@@ -104,7 +104,7 @@ $("#shapeSize").val( $("#shapeSize-range").slider("values",0) + " - " + $("#shap
 $("#gridSize-range").slider({
 	value: 50,
 	min: 30,
-	max: 200,
+	max: 250,
 	range: "min",
 	slide: function( event, ui ) {
 		$("#gridSize").val( ui.value);
@@ -114,23 +114,51 @@ $("#gridSize-range").slider({
 });
 $("#gridSize").val( $("#gridSize-range").slider("values",0) + " - " + $("#gridSize-range").slider("values",1)  );
 
+$("#xOffset-range").slider({
+	value: 0,
+	min: -50,
+	max: 50,
+	range: "min",
+	slide: function( event, ui ) {
+		$("#xOffset").val( ui.value);
+		xOffset = ui.value;
+		draw();
+	}
+});
+$("#xOffset").val( $("#xOffset-range").slider("values",0) + " - " + $("#xOffset-range").slider("values",1) );
+
+$("#yOffset-range").slider({
+	value: 0,
+	min: -50,
+	max: 50,
+	range: "min",
+	slide: function( event, ui ) {
+		$("#yOffset").val( ui.value);
+		yOffset = ui.value;
+		draw();
+	}
+});
+$("#yOffset").val( $("#yOffset-range").slider("values",0) + " - " + $("#yOffset-range").slider("values",1) );
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// CANVAS P5JS
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 function draw(){
 
 	background(255);	
 	noLoop();
 
-	// layers[1].styleMode = "gridCircles";
-	// layers[1].colour = color(0,100,255,150);
-	// layers[1].grid = 100;
-	layers[1].display();
+	layers[1].styleMode = "gridCircles";
+	layers[1].colour = color(0,100,255,150);
+	layers[1].xOffset = 20;
+	layers[1].yOffset = 20;
+	// layers[1].display();
 
 
-	// layers[2].styleMode = "gridCircles";
+	layers[2].styleMode = "gridCircles";
+	layers[0].xOffset = 10;
+	layers[0].yOffset = 30;
 	// layers[2].colour = textFillColour;
 	layers[2].display();
 
@@ -140,6 +168,8 @@ function draw(){
 	layers[0].minShapeSize = minSize;
 	layers[0].maxShapeSize = maxSize;
 	layers[0].stroke = false;
+	layers[0].xOffset = xOffset;
+	layers[0].yOffset = yOffset;
 	layers[0].display();
 }
 
@@ -217,25 +247,25 @@ function getTextSize(){
 	return thisTextSize;
 }
 
-function drawNormal(){
+function drawNormal(xOffset, yOffset){
 	textSize(getTextSize());
 	textAlign(CENTER);
-	text(myType, canvasWidth/2, 500);
+	text(myType, (canvasWidth/2)+xOffset, 500+yOffset);
 }
 
-function drawRandoCircles(){
+function drawRandoCircles(xOffset, yOffset){
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
 		var textColour = pg.get(xPos, yPos);
 		var shapeSize = random(minSize, maxSize);
 		if( textColour[0] == 0 ){
-			ellipse(xPos, yPos, shapeSize, shapeSize);
+			ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
 		}
 	}
 }
 
-function drawWeirdoCircles(){
+function drawWeirdoCircles(xOffset, yOffset){
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(200, 600);
@@ -249,12 +279,12 @@ function drawWeirdoCircles(){
 				ellipse(xPos-back, yPos-back, shapeSize, shapeSize);
 			}
 			stroke(0);
-			ellipse(xPos, yPos, shapeSize, shapeSize);
+			ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
 		}
 	}
 }
 
-function drawGridSquares(thisGridSize, minShapeSize, maxShapeSize){
+function drawGridSquares(thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	for (var x=0; x<thisGridSize; x++) {
 		for(var y=0; y<thisGridSize; y++){
 			var xPos = x * (width/thisGridSize);
@@ -262,26 +292,26 @@ function drawGridSquares(thisGridSize, minShapeSize, maxShapeSize){
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minShapeSize, maxShapeSize);
 			if( textColour[0] == 0 ){
-				rect(xPos, yPos, shapeSize, shapeSize);
+				rect(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
 			}
 		}
 	}
 }
 
-function drawRandoSquares(){
+function drawRandoSquares(xOffset, yOffset){
 	for (var i=0; i<3000; i++) {
 		var xPos = random(canvasWidth);
 		var yPos = random(100, 600);
 		var textColour = pg.get(xPos, yPos);
 		var shapeSize = random(minSize, maxSize);
 		if( textColour[0] == 0 ){
-			rect(xPos, yPos, shapeSize, shapeSize);
+			rect(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
 		}
 	}
 }
 
 
-function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize){
+function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	for (var x=0; x<thisGridSize; x++) {
 		for(var y=0; y<thisGridSize; y++){
 			var xPos = x * (width/thisGridSize);
@@ -289,7 +319,7 @@ function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize){
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minShapeSize, maxShapeSize);
 			if( textColour[0] == 0 ){
-				ellipse(xPos, yPos, shapeSize, shapeSize);
+				ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
 			}
 		}
 	}
@@ -301,7 +331,7 @@ function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize){
 
 function Layer() {
 	this.xOffset = 0;
-	this.yOffset= 0;
+	this.yOffset = 0;
 	this.styleMode = "plain";
 	this.font;
 	this.colour = color(0,0,0);
@@ -319,19 +349,19 @@ function Layer() {
 
 		fill(this.colour);
 		if(this.styleMode=="gridCircles"){
-			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize);
+			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="randoCircles"){
-			drawRandoCircles();
+			drawRandoCircles(this.xOffset, this.yOffset);
 		}else if(this.styleMode=="weirdoCircles"){
-			drawWeirdoCircles();
+			drawWeirdoCircles(this.xOffset, this.yOffset);
 		}else if(this.styleMode=="gridSquares"){
-			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize);
+			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="randoSquares"){
-			drawRandoSquares();
+			drawRandoSquares(this.xOffset, this.yOffset);
 		}else if(this.styleMode=="plain"){
-			drawNormal();
+			drawNormal(this.xOffset, this.yOffset);
 		}else{
-			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize);
+			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}
 	};
 
@@ -366,10 +396,25 @@ function getColour(){
 	return textFillColour;
 	// return rgbFillColour;
 }
-
 $('#colourTextBox').on('change', getColour);
 
-// hexToRgb("#0033ff").g 
+// getText();
+function getText(){
+	console.log("running");
+	var textBoxResult = $("#textBox").val();
+	console.log(textBoxResult);
+
+	myType = textBoxResult;
+	pg.background(255);
+	pg.noStroke();
+	pg.fill(0);
+	pg.textSize(getTextSize());
+	pg.textAlign(CENTER);
+	pg.text(myType, canvasWidth/2, 500);
+
+	draw();
+}
+$('#textBox').keyup(getText);
 
 
 
