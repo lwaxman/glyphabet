@@ -5,11 +5,10 @@
 		<meta charset="utf-8">
 		<title>INDEX</title>
 
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="css/style.css">
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.10/p5.min.js"></script>
-		
-		<link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900,100' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
@@ -17,20 +16,21 @@
 
 	<body>
 		<div class="styleControls">
+				
+			<input id="textBox" type="text" value="TEXT">
 
-			<div></div>
-			<div class="styleMode" id="gridCircles">GRID_CIRCLES</div>
-			<div class="styleMode" id="randoCircles">RANDO_CIRCLES</div>
-			<div class="styleMode" id="weirdoCircles">WEIRDO_CIRCLES</div>
-			<div class="styleMode" id="randoSquares">RANDO_SQUARES</div>
-			<div class="styleMode" id="gridSquares">GRID_SQUARES</div>
+			<div class="styleMode allign" id="gridCircles">GRID_CIRCLES</div>
+			<div class="styleMode allign" id="randoCircles">RANDO_CIRCLES</div>
+			<div class="styleMode allign" id="weirdoCircles">WEIRDO_CIRCLES</div>
+			<div class="styleMode allign" id="randoSquares">RANDO_SQUARES</div>
+			<div class="styleMode allign" id="gridSquares">GRID_SQUARES</div>
 
 			<div id="slider1">
 				<p>
 					<label for="shapeSize">circle size:</label>
 					<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div id="shapeSize-range"></div>
+				<div class="allign" class="slider" id="shapeSize-range"></div>
 			</div>
 
 			<div id="slider2">
@@ -38,11 +38,34 @@
 					<label for="gridSize">grid size:</label>
 					<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div id="gridSize-range"></div>
+				<div class="allign" class="slider" id="gridSize-range"></div>
 			</div>
 
-			<input class="color" id="colourTextBox" value="F0FF19">
+			<div id="slider3">
+				<p>
+					<label for="xOffset">x-offset:</label>
+					<input type="text" id="xOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div class="allign" class="slider" id="xOffset-range"></div>
+			</div>
+
+			<div id="slider4">
+				<p>
+					<label for="yOffset">y-offset:</label>
+					<input type="text" id="yOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				</p>
+				<div class="allign" class="slider" id="yOffset-range"></div>
+			</div>
+
+			<input class="color" id="colourTextBox" value="19D9FF">
+
+			<div id="layers">
+				<div class="layer" id="layer1">LAYER1</div>
+				<div class="layer" id="layer2">LAYER2</div>
+			</div>
+			<div id="newLayer" class="allign"> <div class="plusIcon">+</div> LAYER </div>
 		</div>
+
 
 
 		<script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
