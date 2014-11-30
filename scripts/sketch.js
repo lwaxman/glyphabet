@@ -43,7 +43,7 @@ var layers = [];
 function setup(){
 	textFillColour = color(25,212,255, 150);
 
-	for(var i=0; i<11; i++){
+	for(var i=0; i<4; i++){
 		layers[i] = new Layer();
 	}
 
@@ -184,7 +184,7 @@ function draw(){
 	layerTemp.yOffset = yOffset;
 	layerTemp.display();
 
-	for(var j=1; j<11; j++){
+	for(var j=1; j<4; j++){
 		layers[j].display();
 	}
 }
@@ -194,67 +194,55 @@ $("#newLayer").on("click", addNewLayer( layers[layerCount+1] ));
 
 $(".layer").on("click", function(){
 	console.log("clicky " + this.id);
-	switchLayers();
+	var thisLayer = this.id;
+	var thisLayerNumber = thisLayer.split("r");
+	switchLayers(thisLayerNumber[1]);
 });
 
 function addNewLayer(thisLayer){
 	layerCount++;
 }
 
-function switchLayers(){
-
-	// layers[0] = layerTemp;
-	// layerTemp = layers[5];
-	// layers[0] = layers[1]
-	// draw();
-	// return layerTemp;
-	// layers[5] = layers[0];
-	// layers[5].styleMode = style;
-	// layers[5].xOffset = 50;
-	// layers[5].display();
-	// draw();
-	// return layers[5];
-	//save layer[0] to layerTemp
-	//save thisLayer to layer[0]		
+function switchLayers(layerNumber){
 	// console.log(thisLayer);
 	// console.log(thisLayerID+" is now layer[0]");
 	// return layers[2].display();
 
-
+	console.log("this layer number = " + layerNumber);
 	// layers[10] = layerTemp;
-	layers[10].styleMode = layerTemp.styleMode;
-	layers[10].xOffset = layerTemp.xOffset;
-	layers[10].yOffset = layerTemp.yOffset;
-	layers[10].font = layerTemp.font;
-	layers[10].colour = layerTemp.colour;
-	layers[10].grid = layerTemp.grid;
-	layers[10].stroke = layerTemp.stroke;
-	layers[10].minShapeSize = layerTemp.minShapeSize;
-	layers[10].maxShapeSize = layerTemp.maxShapeSize;
-	console.log("10: " + layers[10].styleMode);
+	layers[layerNumber].styleMode = layerTemp.styleMode;
+	layers[layerNumber].xOffset = layerTemp.xOffset;
+	layers[layerNumber].yOffset = layerTemp.yOffset;
+	layers[layerNumber].font = layerTemp.font;
+	layers[layerNumber].colour = layerTemp.colour;
+	layers[layerNumber].grid = layerTemp.grid;
+	layers[layerNumber].stroke = layerTemp.stroke;
+	layers[layerNumber].minShapeSize = layerTemp.minShapeSize;
+	layers[layerNumber].maxShapeSize = layerTemp.maxShapeSize;
+	console.log("layerNumber: " + layers[layerNumber].styleMode);
 
-	// layers[5] = layers[10];
-	layers[5].styleMode = layers[10].styleMode;
-	layers[5].xOffset = layers[10].xOffset;
-	layers[5].yOffset = layers[10].yOffset;
-	layers[5].font = layers[10].font;
-	layers[5].colour = layers[10].colour;
-	layers[5].grid = layers[10].grid;
-	layers[5].stroke = layers[10].stroke;
-	layers[5].minShapeSize = layers[10].minShapeSize;
-	layers[5].maxShapeSize = layers[10].maxShapeSize;
-	console.log("5: " + layers[5].styleMode);
+	// layers[5] = layers[layerNumber];
+	layers[0].styleMode = layers[layerNumber].styleMode;
+	layers[0].xOffset = layers[layerNumber].xOffset;
+	layers[0].yOffset = layers[layerNumber].yOffset;
+	layers[0].font = layers[layerNumber].font;
+	layers[0].colour = layers[layerNumber].colour;
+	layers[0].grid = layers[layerNumber].grid;
+	layers[0].stroke = layers[layerNumber].stroke;
+	layers[0].minShapeSize = layers[layerNumber].minShapeSize;
+	layers[0].maxShapeSize = layers[layerNumber].maxShapeSize;
+	console.log("0: " + layers[0].styleMode);
 
-	// layerTemp = layers[5];
-	layerTemp.styleMode = layers[5].styleMode;
-	layerTemp.xOffset = layers[5].xOffset;
-	layerTemp.yOffset = layers[5].yOffset;
-	layerTemp.font = layers[5].font;
-	layerTemp.colour = layers[5].colour;
-	layerTemp.grid = layers[5].grid;
-	layerTemp.stroke = layers[5].stroke;
-	layerTemp.minShapeSize = layers[5].minShapeSize;
-	layerTemp.maxShapeSize = layers[5].maxShapeSize;
+	// layerTemp = layers[0];
+	layerTemp.styleMode = layers[0].styleMode;
+	layerTemp.xOffset = layers[0].xOffset;
+	layerTemp.yOffset = layers[0].yOffset;
+	layerTemp.font = layers[0].font;
+	layerTemp.colour = layers[0].colour;
+	layerTemp.grid = layers[0].grid;
+	layerTemp.stroke = layers[0].stroke;
+	layerTemp.minShapeSize = layers[0].minShapeSize;
+	layerTemp.maxShapeSize = layers[0].maxShapeSize;
 	console.log("temp: " + layerTemp.styleMode);
 
 
@@ -363,6 +351,7 @@ function Layer(){
 	this.colour; //= color(0,0,0, 100);
 	this.grid = 80;
 	this.stroke;
+	this.opacity = false;
 	this.minShapeSize = 5;
 	this.maxShapeSize = 10;
 
@@ -371,6 +360,12 @@ function Layer(){
 			stroke(100);
 		}else{
 			noStroke();
+		}
+
+		if(this.opacity){
+			fill(this.colour);
+		}else{
+			noFill();
 		}
 
 		fill(this.colour);
@@ -388,7 +383,6 @@ function Layer(){
 			drawNormal(this.xOffset, this.yOffset);
 		}else{
 			drawNormal(this.xOffset, this.yOffset);
-			// drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}
 	};
 
