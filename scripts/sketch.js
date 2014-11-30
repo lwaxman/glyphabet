@@ -21,16 +21,18 @@ var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 // var pgTextColour;
 var pg;
-var myType = "TEXT";
+var myType = "TEST";
 var insideText = false;
-var style = "randoCircles";
+var style = "normal";
 var minSize = 10;
 var maxSize = 20;
 var thisTextSize = 100;
 var gridSize = 50;
 var textFillColour;
-var xOffset;
-var yOffset;
+var xOffset = 0;
+var yOffset = 0;
+
+var layerTemp = new Layer();
 
 var layers = [];
 
@@ -40,12 +42,13 @@ var layers = [];
 
 function setup(){
 	textFillColour = color(25,212,255, 150);
-	// pgTextColour = color(0);
 
 	for(var i=0; i<11; i++){
 		layers[i] = new Layer();
 	}
 
+	layerTemp = layers[1];
+	
 	//draw word to pgraphic 
 	createCanvas(canvasWidth, canvasHeight);
 	pg = createGraphics(canvasWidth,800);
@@ -62,23 +65,33 @@ function setup(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 $("#gridCircles").on("click", function(){ 
-	layers[0].styleMode = "gridCircles";
+	// layers[0].styleMode = "gridCircles";
+	style = "gridCircles";
 	draw();
 });
 $("#randoCircles").on("click", function(){ 
-	layers[0].styleMode = "randoCircles";
+	// layers[0].styleMode = "randoCircles";
+	style = "randoCircles";
 	draw();
 });
 $("#weirdoCircles").on("click", function(){ 
-	layers[0].styleMode = "weirdoCircles";
+	// layers[0].styleMode = "weirdoCircles";
+	style = "weirdoCircles";
 	draw();
 });
 $("#randoSquares").on("click", function(){ 
-	layers[0].styleMode = "randoSquares";
+	// layers[0].styleMode = "randoSquares";
+	style = "randoSquares";
 	draw();
 });
 $("#gridSquares").on("click", function(){ 
-	layers[0].styleMode = "gridSquares";
+	// layers[0].styleMode = "gridSquares";
+	style = "gridSquares";
+	draw();
+});
+$("#normal").on("click", function(){ 
+	// layers[0].styleMode = "gridSquares";
+	style = "normal";
 	draw();
 });
 
@@ -149,28 +162,31 @@ function draw(){
 	background(255);	
 	noLoop();
 
-	layers[1].styleMode = "gridCircles";
+	layers[1].styleMode = "normal";
 	layers[1].colour = color(0,100,255,150);
 	layers[1].xOffset = 20;
 	layers[1].yOffset = 20;
 	// layers[1].display();
 
-
 	layers[2].styleMode = "gridCircles";
-	layers[0].xOffset = 10;
-	layers[0].yOffset = 30;
-	// layers[2].colour = textFillColour;
+	layers[2].xOffset = 10;
+	layers[2].yOffset = 30;
+	layers[2].colour = color(0,200,255,150);
 	layers[2].display();
 
-	layers[0] = layers[1];
-	layers[0].colour = textFillColour;
-	layers[0].grid = gridSize;
-	layers[0].minShapeSize = minSize;
-	layers[0].maxShapeSize = maxSize;
-	layers[0].stroke = false;
-	layers[0].xOffset = xOffset;
-	layers[0].yOffset = yOffset;
-	layers[0].display();
+	layerTemp.styleMode = style;
+	layerTemp.colour = textFillColour;
+	layerTemp.grid = gridSize;
+	layerTemp.minShapeSize = minSize;
+	layerTemp.maxShapeSize = maxSize;
+	layerTemp.stroke = false;
+	layerTemp.xOffset = xOffset;
+	layerTemp.yOffset = yOffset;
+	layerTemp.display();
+
+	for(var j=1; j<11; j++){
+		layers[j].display();
+	}
 }
 
 var layerCount = 1;
@@ -178,62 +194,72 @@ $("#newLayer").on("click", addNewLayer( layers[layerCount+1] ));
 
 $(".layer").on("click", function(){
 	console.log("clicky " + this.id);
-	switchLayers(layers[1], this.id)
+	switchLayers();
 });
 
 function addNewLayer(thisLayer){
-
 	layerCount++;
-
 }
 
-function switchLayers(thisLayer, thisLayerID){
-	var layerTemp = new Layer();
+function switchLayers(){
 
+	// layers[0] = layerTemp;
+	// layerTemp = layers[5];
+	// layers[0] = layers[1]
+	// draw();
+	// return layerTemp;
+	// layers[5] = layers[0];
+	// layers[5].styleMode = style;
+	// layers[5].xOffset = 50;
+	// layers[5].display();
+	// draw();
+	// return layers[5];
 	//save layer[0] to layerTemp
-	//save thisLayer to layer[0]	
+	//save thisLayer to layer[0]		
+	// console.log(thisLayer);
+	// console.log(thisLayerID+" is now layer[0]");
+	// return layers[2].display();
 
-	console.log(thisLayerID+" is now layer[0]");
 
-	layerTemp = thisLayer;
-	layerTemp.styleMode = thisLayer.styleMode;
-	layerTemp.xOffset = thisLayer.styleMode;
-	layerTemp.yOffset = thisLayer.styleMode;
-	layerTemp.styleMode = thisLayer.styleMode;
-	layerTemp.font = thisLayer.styleMode;
-	layerTemp.colour = thisLayer.styleMode;
-	layerTemp.grid = thisLayer.styleMode;
-	layerTemp.stroke = thisLayer.styleMode;
-	layerTemp.minShapeSize = thisLayer.styleMode;
-	layerTemp.maxShapeSize = thisLayer.styleMode;
+	// layers[10] = layerTemp;
+	layers[10].styleMode = layerTemp.styleMode;
+	layers[10].xOffset = layerTemp.xOffset;
+	layers[10].yOffset = layerTemp.yOffset;
+	layers[10].font = layerTemp.font;
+	layers[10].colour = layerTemp.colour;
+	layers[10].grid = layerTemp.grid;
+	layers[10].stroke = layerTemp.stroke;
+	layers[10].minShapeSize = layerTemp.minShapeSize;
+	layers[10].maxShapeSize = layerTemp.maxShapeSize;
+	console.log("10: " + layers[10].styleMode);
 
-	layers[0] = layerTemp;
-	layers[0].styleMode = layerTemp.styleMode;
-	layers[0].xOffset = layerTemp.styleMode;
-	layers[0].yOffset = layerTemp.styleMode;
-	layers[0].styleMode = layerTemp.styleMode;
-	layers[0].font = layerTemp.styleMode;
-	layers[0].colour = layerTemp.styleMode;
-	layers[0].grid = layerTemp.styleMode;
-	layers[0].stroke = layerTemp.styleMode;
-	layers[0].minShapeSize = layerTemp.styleMode;
-	layers[0].maxShapeSize = layerTemp.styleMode;
+	// layers[5] = layers[10];
+	layers[5].styleMode = layers[10].styleMode;
+	layers[5].xOffset = layers[10].xOffset;
+	layers[5].yOffset = layers[10].yOffset;
+	layers[5].font = layers[10].font;
+	layers[5].colour = layers[10].colour;
+	layers[5].grid = layers[10].grid;
+	layers[5].stroke = layers[10].stroke;
+	layers[5].minShapeSize = layers[10].minShapeSize;
+	layers[5].maxShapeSize = layers[10].maxShapeSize;
+	console.log("5: " + layers[5].styleMode);
 
-	thisLayer = layers[0];
-	thisLayer.styleMode = layers[0].styleMode;
-	thisLayer.xOffset = layers[0].styleMode;
-	thisLayer.yOffset = layers[0].styleMode;
-	thisLayer.styleMode = layers[0].styleMode;
-	thisLayer.font = layers[0].styleMode;
-	thisLayer.colour = layers[0].styleMode;
-	thisLayer.grid = layers[0].styleMode;
-	thisLayer.stroke = layers[0].styleMode;
-	thisLayer.minShapeSize = layers[0].styleMode;
-	thisLayer.maxShapeSize = layers[0].styleMode;
+	// layerTemp = layers[5];
+	layerTemp.styleMode = layers[5].styleMode;
+	layerTemp.xOffset = layers[5].xOffset;
+	layerTemp.yOffset = layers[5].yOffset;
+	layerTemp.font = layers[5].font;
+	layerTemp.colour = layers[5].colour;
+	layerTemp.grid = layers[5].grid;
+	layerTemp.stroke = layers[5].stroke;
+	layerTemp.minShapeSize = layers[5].minShapeSize;
+	layerTemp.maxShapeSize = layers[5].maxShapeSize;
+	console.log("temp: " + layerTemp.styleMode);
 
-	// return layers[0];
+
+	draw();
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -329,12 +355,12 @@ function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize, xOffset, yOff
 //////////////////////////////////////////////////////////////////////////////////////////////// CLASS LAYER
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-function Layer() {
+function Layer(){
 	this.xOffset = 0;
 	this.yOffset = 0;
-	this.styleMode = "plain";
-	this.font;
-	this.colour = color(0,0,0);
+	this.styleMode = "normal";
+	this.font = "helvetica";
+	this.colour; //= color(0,0,0, 100);
 	this.grid = 80;
 	this.stroke;
 	this.minShapeSize = 5;
@@ -358,10 +384,11 @@ function Layer() {
 			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="randoSquares"){
 			drawRandoSquares(this.xOffset, this.yOffset);
-		}else if(this.styleMode=="plain"){
+		}else if(this.styleMode=="normal"){
 			drawNormal(this.xOffset, this.yOffset);
 		}else{
-			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
+			drawNormal(this.xOffset, this.yOffset);
+			// drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}
 	};
 
@@ -391,7 +418,7 @@ function getColour(){
 	var colourBoxColour = $("#colourTextBox").val();
 	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, 150);
 	textFillColour = rgbFillColour;
-	console.log(textFillColour);
+	// console.log(textFillColour);
 	draw();
 	return textFillColour;
 	// return rgbFillColour;
@@ -400,7 +427,6 @@ $('#colourTextBox').on('change', getColour);
 
 // getText();
 function getText(){
-	console.log("running");
 	var textBoxResult = $("#textBox").val();
 	console.log(textBoxResult);
 
