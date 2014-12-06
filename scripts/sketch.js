@@ -13,6 +13,7 @@
 		+ normal style
 		+ position layer
 		add new line of text
+		create slider control for alpha value
 		+ fix check for black area
 *
 */
@@ -220,6 +221,7 @@ function switchLayers(layerNumber){
 	currentLayer = parseInt(layerNumber, 10);
 	$(".layer").removeClass("active");
 	$("#layer"+currentLayer).addClass("active");
+
 	return currentLayer;
 }
 
@@ -341,7 +343,7 @@ function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOf
 			var shapeSize = random(minShapeSize, maxShapeSize);
 			var radius = shapeSize/2;
 			stroke(colour);
-			strokeWeight(2);
+			// strokeWeight(2);
 			if( textColour[0] == 0 ){
 				if(onGrid){
 					line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
@@ -461,17 +463,10 @@ function hexToRgb(hex) {
 
 var alphaVal = 150;
 //set colour of colour box from object later.  
-// var colourBoxColour = $("#colourTextBox").val();
+var colourBoxColour;// = $("#colourTextBox").val();
 // layers[current]
 function getColour(){
-	var colourBoxColour = $("#colourTextBox").val();
-	// if(layers[currentLayer].colour != null){
-	// 	colourBoxColour = layers[currentLayer].colour;
-	// }else{
-	// 	colourBoxColour = $("#colourTextBox").val();
-	// }
-	// alphaVal = layers[currentLayer].alpha;
-	// console.log(colourBoxColour);
+	colourBoxColour = $("#colourTextBox").val();
 	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, alphaVal);
 	textFillColour = rgbFillColour;
 	// console.log(textFillColour);
