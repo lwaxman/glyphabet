@@ -86,6 +86,19 @@ $("#gridOff").on("click", function(){
 	draw();
 });
 
+var editable = false;
+$("#layers").on("click", ".edit", function(){ 
+	editable = !editable;
+	if(editable){
+		$(this).addClass("editActive");
+		$(this).siblings().attr('contenteditable','true');
+	}else{
+		$(this).removeClass("editActive");
+		$(this).siblings().attr('contenteditable','false');
+	}
+});
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SLIDERS
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +141,7 @@ $("#xOffset-range").slider({
 		draw();
 	}
 });
-$("#xOffset").val( $("#xOffset-range").slider("values",0) + " - " + $("#xOffset-range").slider("values",1) );
+$("#xOffset").val( $("#xOffset-range").slider("values",0));
 
 $("#yOffset-range").slider({
 	value: 0,
@@ -141,7 +154,7 @@ $("#yOffset-range").slider({
 		draw();
 	}
 });
-$("#yOffset").val( $("#yOffset-range").slider("values",0) + " - " + $("#yOffset-range").slider("values",1) );
+$("#yOffset").val( $("#yOffset-range").slider("values",0));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SETUP
@@ -165,7 +178,7 @@ function setup(){
 	pg.textFont(font);
 	pg.textSize(getTextSize());
 	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, canvasHeight/2);
+	pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
 
 	rectMode(CENTER);
 }
@@ -180,6 +193,7 @@ function draw(){
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
 
+	// image(pg, 0, 0)
 	layers[currentLayer].styleMode = style;
 	layers[currentLayer].colour = textFillColour;
 	layers[currentLayer].grid = gridSize;
@@ -210,8 +224,7 @@ function switchLayers(layerNumber){
 }
 
 function addNewLayer(){
-	$("#layers").append("<div class='layer' id='layer"+ layerCount +"'> LAYER"+ layerCount +"</div>" );
-	console.log("before switch "+layerCount);
+	$("#layers").append("<div class='layer' id='layer"+ layerCount +"'><div class='layerName'>LAYER"+ layerCount +"</div><div class='edit'></div></div>" );
 	switchLayers(layerCount);
 	layerCount++;
 	return layerCount;
@@ -257,15 +270,15 @@ function drawNormal(xOffset, yOffset, font){
 	textSize(getTextSize());
 	textFont(font);
 	textAlign(CENTER);
-	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+yOffset);
+	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 }
 
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2) - textsize*0.9;
-	var textYMax = (height/2) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -369,9 +382,9 @@ function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset,
 			var randomOffset = random(-10, 10);
 			if( textColour[0] == 0 ){
 				if(onGrid){
-					polygon(xPos+xOffset, yPos+yOffset, shapeSize, 6);
+					polygon(xPos+xOffset, yPos+yOffset, shapeSize*0.6, 6);
 				}else{
-					polygon(xPos+xOffset+randomOffset, yPos+yOffset+randomOffset, shapeSize, 6);
+					polygon(xPos+xOffset+randomOffset, yPos+yOffset+randomOffset, shapeSize*0.6, 6);
 				}
 			}
 		}
@@ -445,14 +458,20 @@ function hexToRgb(hex) {
     } : null;
 }
 
+var alphaVal = 150;
 //set colour of colour box from object later.  
-// var colourBoxColour = $("#colourTextBox").val();
+var colourBoxColour = $("#colourTextBox").val();
 // layers[current]
 function getColour(){
-	var colourBoxColour = $("#colourTextBox").val();
-	// var colourBoxColour = layers[currentLayer].colour;
+	// var colourBoxColour = $("#colourTextBox").val();
+	if(layers[currentLayer].colour != null){
+		colourBoxColour = layers[currentLayer].colour;
+	}else{
+		colourBoxColour = $("#colourTextBox").val();
+	}
+	// alphaVal = layers[currentLayer].alpha;
 	console.log(colourBoxColour);
-	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, 150);
+	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, alphaVal);
 	textFillColour = rgbFillColour;
 	// console.log(textFillColour);
 	draw();
@@ -464,6 +483,9 @@ $('#colourTextBox').on('change', getColour);
 // getText();
 function getText(){
 	var textBoxResult = $("#textBox").val();
+	if(textBoxResult==""){
+		textBosResult = " ";
+	}
 	// console.log(textBoxResult);
 	myType = textBoxResult;
 	pg.background(255);
