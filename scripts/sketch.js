@@ -6,14 +6,14 @@
 * Hex to RGB function courtsey of http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 *
 	TO DO: 
-		seperate layers (layers[0] = layers[1], etc)
-		select layer
-		add new layer
-		array of layers?
-		normal style
-		position layer
+		+ seperate layers (layers[0] = layers[1], etc)
+		/+ select layer
+		+ add new layer
+		+ array of layers?
+		+ normal style
+		+ position layer
 		add new line of text
-		fix check for black area
+		+ fix check for black area
 *
 */
 
@@ -302,8 +302,8 @@ function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2) - textsize*0.9;
-	var textYMax = (height/2) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -328,8 +328,8 @@ function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOf
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2) - textsize*0.9;
-	var textYMax = (height/2) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -340,9 +340,10 @@ function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOf
 			var randomOffset = random(-10, 10);
 			var shapeSize = random(minShapeSize, maxShapeSize);
 			var radius = shapeSize/2;
+			stroke(colour);
+			strokeWeight(2);
 			if( textColour[0] == 0 ){
 				if(onGrid){
-					stroke(colour);
 					line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
 					line(xPos+xOffset-radius, yPos+yOffset+radius, xPos+xOffset+radius, yPos+yOffset-radius);
 				}else{
@@ -370,8 +371,8 @@ function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset,
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2) - textsize*0.9;
-	var textYMax = (height/2) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -460,17 +461,17 @@ function hexToRgb(hex) {
 
 var alphaVal = 150;
 //set colour of colour box from object later.  
-var colourBoxColour = $("#colourTextBox").val();
+// var colourBoxColour = $("#colourTextBox").val();
 // layers[current]
 function getColour(){
-	// var colourBoxColour = $("#colourTextBox").val();
-	if(layers[currentLayer].colour != null){
-		colourBoxColour = layers[currentLayer].colour;
-	}else{
-		colourBoxColour = $("#colourTextBox").val();
-	}
+	var colourBoxColour = $("#colourTextBox").val();
+	// if(layers[currentLayer].colour != null){
+	// 	colourBoxColour = layers[currentLayer].colour;
+	// }else{
+	// 	colourBoxColour = $("#colourTextBox").val();
+	// }
 	// alphaVal = layers[currentLayer].alpha;
-	console.log(colourBoxColour);
+	// console.log(colourBoxColour);
 	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, alphaVal);
 	textFillColour = rgbFillColour;
 	// console.log(textFillColour);
