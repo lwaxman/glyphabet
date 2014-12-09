@@ -17,20 +17,26 @@
 	<body>
 		<div class="styleControls">
 				
-			<input id="textBox" type="text" value="TEXT">
+			<input id="textBox" type="text" value="TEST">
 
-			<div class="styleMode allign" id="gridCircles">GRID_CIRCLES</div>
-			<div class="styleMode allign" id="randoCircles">RANDO_CIRCLES</div>
-			<div class="styleMode allign" id="weirdoCircles">WEIRDO_CIRCLES</div>
-			<div class="styleMode allign" id="randoSquares">RANDO_SQUARES</div>
-			<div class="styleMode allign" id="gridSquares">GRID_SQUARES</div>
+			<div class="styleMode allign active" id="normal">NORMAL</div>
+			<div class="styleMode allign" id="circles">CIRCLES</div>
+			<div class="styleMode allign" id="squares">SQUARES</div>
+			<div class="styleMode allign" id="exes">EXES</div>
+			<div class="styleMode allign" id="polygons">POLYGONS</div>
+			<div id="gridControl">
+				<div class="gridControl active" id="gridOn">GRID ON</div>
+				<div class="gridControl" id="gridOff">GRID OFF</div>
+			</div>
+			<!-- <div class="styleMode allign" id="randoSquares">RANDO_SQUARES</div> -->
+			<!--<div class="styleMode allign" id="randoCircles">RANDO_CIRCLES</div>-->			
 
 			<div id="slider1">
 				<p>
 					<label for="shapeSize">circle size:</label>
 					<input type="text" id="shapeSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign" class="slider" id="shapeSize-range"></div>
+				<div class="allign" class="slider-range" id="shapeSize-range"></div>
 			</div>
 
 			<div id="slider2">
@@ -38,7 +44,7 @@
 					<label for="gridSize">grid size:</label>
 					<input type="text" id="gridSize" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign" class="slider" id="gridSize-range"></div>
+				<div class="allign" class="slider-range" id="gridSize-range"></div>
 			</div>
 
 			<div id="slider3">
@@ -46,7 +52,7 @@
 					<label for="xOffset">x-offset:</label>
 					<input type="text" id="xOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign" class="slider" id="xOffset-range"></div>
+				<div class="allign" class="slider-range" id="xOffset-range"></div>
 			</div>
 
 			<div id="slider4">
@@ -54,19 +60,18 @@
 					<label for="yOffset">y-offset:</label>
 					<input type="text" id="yOffset" readonly style="border:0; color:#f6931f; font-weight:bold;">
 				</p>
-				<div class="allign" class="slider" id="yOffset-range"></div>
+				<div class="allign" class="slider-range" id="yOffset-range"></div>
 			</div>
 
 			<input class="color" id="colourTextBox" value="19D9FF">
 
 			<div id="layers">
-				<div class="layer" id="layer1">LAYER1</div>
-				<div class="layer" id="layer2">LAYER2</div>
+				<div class="layer active" id="layer0">
+					<div class="layerName">LAYER0</div><div class="edit"></div>
+				</div>
 			</div>
 			<div id="newLayer" class="allign"> <div class="plusIcon">+</div> LAYER </div>
 		</div>
-
-
 
 		<script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>
 		<script type="text/javascript" src="scripts/sketch.js"></script>

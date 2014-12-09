@@ -6,81 +6,99 @@
 * Hex to RGB function courtsey of http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 *
 	TO DO: 
-		seperate layers (layers[0] = layers[1], etc)
-		select layer
-		add new layer
-		array of layers?
-		normal style
-		position layer
+		+ seperate layers (layers[0] = layers[1], etc)
+		/+ select layer
+		+ add new layer
+		+ array of layers?
+		+ normal style
+		+ position layer
 		add new line of text
-		fix check for black area
+		create slider control for alpha value
+		+ fix check for black area
 *
 */
 
 var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
-// var pgTextColour;
 var pg;
-var myType = "TEXT";
+var myType = "TEST";
+var font = "Georgia";
 var insideText = false;
-var style = "randoCircles";
+var style = "normal";
 var minSize = 10;
 var maxSize = 20;
-var thisTextSize = 100;
-var gridSize = 50;
+var textsize = 100;
+var gridSize = 80;
 var textFillColour;
-var xOffset;
-var yOffset;
+var xOffset = 0;
+var yOffset = 0;
+var structure = true;
+var layerCount = 1;
 
+var currentLayer = 0;
+// var layerTemp = new Layer();
 var layers = [];
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////// SETUP
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-function setup(){
-	textFillColour = color(25,212,255, 150);
-	// pgTextColour = color(0);
-
-	for(var i=0; i<11; i++){
-		layers[i] = new Layer();
-	}
-
-	//draw word to pgraphic 
-	createCanvas(canvasWidth, canvasHeight);
-	pg = createGraphics(canvasWidth,800);
-	pg.background(255);
-	pg.noStroke();
-	pg.fill(0);
-	pg.textSize(getTextSize());
-	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, 500);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-$("#gridCircles").on("click", function(){ 
-	layers[0].styleMode = "gridCircles";
+$("#normal").on("click", function(){ 
+	style = "normal";
+	$(".styleMode").removeClass("active");
+	$("#normal").addClass("active");
 	draw();
 });
-$("#randoCircles").on("click", function(){ 
-	layers[0].styleMode = "randoCircles";
+$("#circles").on("click", function(){ 
+	style = "circles";
+	$(".styleMode").removeClass("active");
+	$("#circles").addClass("active");
 	draw();
 });
-$("#weirdoCircles").on("click", function(){ 
-	layers[0].styleMode = "weirdoCircles";
+$("#squares").on("click", function(){ 
+	style = "squares";
+	$(".styleMode").removeClass("active");
+	$("#squares").addClass("active");
 	draw();
 });
-$("#randoSquares").on("click", function(){ 
-	layers[0].styleMode = "randoSquares";
+$("#exes").on("click", function(){ 
+	style = "exes";
+	$(".styleMode").removeClass("active");
+	$("#exes").addClass("active");
 	draw();
 });
-$("#gridSquares").on("click", function(){ 
-	layers[0].styleMode = "gridSquares";
+$("#polygons").on("click", function(){ 
+	style = "polygons";
+	$(".styleMode").removeClass("active");
+	$("#polygons").addClass("active");
 	draw();
 });
+
+$("#gridOn").on("click", function(){ 
+	structure = true;
+	$(".gridControl").removeClass("active");
+	$("#gridOn").addClass("active");
+	draw();
+});
+$("#gridOff").on("click", function(){ 
+	structure = false;
+	$(".gridControl").removeClass("active");
+	$("#gridOff").addClass("active");
+	draw();
+});
+
+var editable = false;
+$("#layers").on("click", ".edit", function(){ 
+	editable = !editable;
+	if(editable){
+		$(this).addClass("editActive");
+		$(this).siblings().attr('contenteditable','true');
+	}else{
+		$(this).removeClass("editActive");
+		$(this).siblings().attr('contenteditable','false');
+	}
+});
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SLIDERS
@@ -100,9 +118,8 @@ $("#shapeSize-range").slider({
 });
 $("#shapeSize").val( $("#shapeSize-range").slider("values",0) + " - " + $("#shapeSize-range").slider("values",1) );
 
-
 $("#gridSize-range").slider({
-	value: 50,
+	value: 80,
 	min: 30,
 	max: 250,
 	range: "min",
@@ -112,7 +129,7 @@ $("#gridSize-range").slider({
 		draw();
 	}
 });
-$("#gridSize").val( $("#gridSize-range").slider("values",0) + " - " + $("#gridSize-range").slider("values",1)  );
+$("#gridSize").val( $("#gridSize-range").slider("values",0));
 
 $("#xOffset-range").slider({
 	value: 0,
@@ -125,7 +142,7 @@ $("#xOffset-range").slider({
 		draw();
 	}
 });
-$("#xOffset").val( $("#xOffset-range").slider("values",0) + " - " + $("#xOffset-range").slider("values",1) );
+$("#xOffset").val( $("#xOffset-range").slider("values",0));
 
 $("#yOffset-range").slider({
 	value: 0,
@@ -138,103 +155,98 @@ $("#yOffset-range").slider({
 		draw();
 	}
 });
-$("#yOffset").val( $("#yOffset-range").slider("values",0) + " - " + $("#yOffset-range").slider("values",1) );
+$("#yOffset").val( $("#yOffset-range").slider("values",0));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////// CANVAS P5JS
+//////////////////////////////////////////////////////////////////////////////////////////////// SETUP
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function setup(){
+	textFillColour = color(25,212,255, 150);
+
+	for(var i=0; i<5; i++){
+		layers[i] = new Layer();
+	}
+
+	// layerTemp = layers[1];
+	
+	//draw word to pgraphic 
+	createCanvas(canvasWidth, canvasHeight);
+	pg = createGraphics(canvasWidth,canvasHeight+20);
+	pg.background(255);
+	pg.noStroke();
+	pg.fill(0);
+	pg.textFont(font);
+	pg.textSize(getTextSize());
+	pg.textAlign(CENTER);
+	pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
+
+	rectMode(CENTER);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// DRAW
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 function draw(){
 
 	background(255);	
 	noLoop();
+	console.log("draw(): current layer = "+ currentLayer);
 
-	layers[1].styleMode = "gridCircles";
-	layers[1].colour = color(0,100,255,150);
-	layers[1].xOffset = 20;
-	layers[1].yOffset = 20;
-	// layers[1].display();
+	// image(pg, 0, 0)
+	layers[currentLayer].styleMode = style;
+	layers[currentLayer].colour = textFillColour;
+	layers[currentLayer].grid = gridSize;
+	layers[currentLayer].onGrid = structure;
+	layers[currentLayer].minShapeSize = minSize;
+	layers[currentLayer].maxShapeSize = maxSize;
+	layers[currentLayer].font = font;
+	layers[currentLayer].stroke = false;
+	layers[currentLayer].xOffset = xOffset;
+	layers[currentLayer].yOffset = yOffset;
 
-
-	layers[2].styleMode = "gridCircles";
-	layers[0].xOffset = 10;
-	layers[0].yOffset = 30;
-	// layers[2].colour = textFillColour;
-	layers[2].display();
-
-	layers[0] = layers[1];
-	layers[0].colour = textFillColour;
-	layers[0].grid = gridSize;
-	layers[0].minShapeSize = minSize;
-	layers[0].maxShapeSize = maxSize;
-	layers[0].stroke = false;
-	layers[0].xOffset = xOffset;
-	layers[0].yOffset = yOffset;
-	layers[0].display();
+	for(var j=0; j<layerCount; j++){
+		layers[j].display();
+	}
 }
 
-var layerCount = 1;
-$("#newLayer").on("click", addNewLayer( layers[layerCount+1] ));
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////// LAYER CONTROLS
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-$(".layer").on("click", function(){
-	console.log("clicky " + this.id);
-	switchLayers(layers[1], this.id)
+
+
+function switchLayers(layerNumber){
+	currentLayer = parseInt(layerNumber, 10);
+	$(".layer").removeClass("active");
+	$("#layer"+currentLayer).addClass("active");
+
+	return currentLayer;
+}
+
+function addNewLayer(){
+	$("#layers").append("<div class='layer' id='layer"+ layerCount +"'><div class='layerName'>LAYER"+ layerCount +"</div><div class='edit'></div></div>" );
+	switchLayers(layerCount);
+	layerCount++;
+	return layerCount;
+}
+
+$("#newLayer").on("click", function(){
+	console.log("new layer");
+	addNewLayer();
 });
 
-function addNewLayer(thisLayer){
+$("#layers").on("click", ".layer", function(){
+	var thisLayer = this.id;
+	var thisLayerNumber = thisLayer.split("r");
+	var layerNumber = parseInt(thisLayerNumber[1], 10);
 
-	layerCount++;
-
-}
-
-function switchLayers(thisLayer, thisLayerID){
-	var layerTemp = new Layer();
-
-	//save layer[0] to layerTemp
-	//save thisLayer to layer[0]	
-
-	console.log(thisLayerID+" is now layer[0]");
-
-	layerTemp = thisLayer;
-	layerTemp.styleMode = thisLayer.styleMode;
-	layerTemp.xOffset = thisLayer.styleMode;
-	layerTemp.yOffset = thisLayer.styleMode;
-	layerTemp.styleMode = thisLayer.styleMode;
-	layerTemp.font = thisLayer.styleMode;
-	layerTemp.colour = thisLayer.styleMode;
-	layerTemp.grid = thisLayer.styleMode;
-	layerTemp.stroke = thisLayer.styleMode;
-	layerTemp.minShapeSize = thisLayer.styleMode;
-	layerTemp.maxShapeSize = thisLayer.styleMode;
-
-	layers[0] = layerTemp;
-	layers[0].styleMode = layerTemp.styleMode;
-	layers[0].xOffset = layerTemp.styleMode;
-	layers[0].yOffset = layerTemp.styleMode;
-	layers[0].styleMode = layerTemp.styleMode;
-	layers[0].font = layerTemp.styleMode;
-	layers[0].colour = layerTemp.styleMode;
-	layers[0].grid = layerTemp.styleMode;
-	layers[0].stroke = layerTemp.styleMode;
-	layers[0].minShapeSize = layerTemp.styleMode;
-	layers[0].maxShapeSize = layerTemp.styleMode;
-
-	thisLayer = layers[0];
-	thisLayer.styleMode = layers[0].styleMode;
-	thisLayer.xOffset = layers[0].styleMode;
-	thisLayer.yOffset = layers[0].styleMode;
-	thisLayer.styleMode = layers[0].styleMode;
-	thisLayer.font = layers[0].styleMode;
-	thisLayer.colour = layers[0].styleMode;
-	thisLayer.grid = layers[0].styleMode;
-	thisLayer.stroke = layers[0].styleMode;
-	thisLayer.minShapeSize = layers[0].styleMode;
-	thisLayer.maxShapeSize = layers[0].styleMode;
-
-	// return layers[0];
-}
-
-
+	$(".layer").removeClass("active");
+	$("#layer"+layerNumber).addClass("active");
+	console.log("#layer"+layerNumber);
+	switchLayers(layerNumber);
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// FUNCTIONS
@@ -243,136 +255,198 @@ function switchLayers(thisLayer, thisLayerID){
 function getTextSize(){
 	var textArray = myType.split("");
 	var textLength = textArray.length;
-	thisTextSize = (canvasWidth/textLength)*1.2;
-	return thisTextSize;
+	textsize = (canvasWidth/textLength)*1.2;
+	textSize(textsize);
+	var textwidth = textWidth(myType);
+	var ratio = textwidth/width;
+	if(ratio<0.7 && ratio>=0.5){
+		textsize = (canvasWidth/textLength)*1.6;
+	}if(ratio<0.5){
+		textsize = (canvasWidth/textLength)*2;
+	}
+	return textsize;
+
 }
 
-function drawNormal(xOffset, yOffset){
+function drawNormal(xOffset, yOffset, font){
 	textSize(getTextSize());
+	textFont(font);
 	textAlign(CENTER);
-	text(myType, (canvasWidth/2)+xOffset, 500+yOffset);
+	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 }
 
-function drawRandoCircles(xOffset, yOffset){
-	for (var i=0; i<3000; i++) {
-		var xPos = random(canvasWidth);
-		var yPos = random(100, 600);
-		var textColour = pg.get(xPos, yPos);
-		var shapeSize = random(minSize, maxSize);
-		if( textColour[0] == 0 ){
-			ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
-		}
-	}
-}
-
-function drawWeirdoCircles(xOffset, yOffset){
-	for (var i=0; i<3000; i++) {
-		var xPos = random(canvasWidth);
-		var yPos = random(200, 600);
-		var textColour = pg.get(xPos, yPos);
-		var shapeSize = random(minSize, maxSize);
-		if( textColour[0] == 0 ){
-			var strokeColour = textFillColour;
-			for(var back=20; back>0; back--){
-				strokeColour+=10;
-				stroke(strokeColour);
-				ellipse(xPos-back, yPos-back, shapeSize, shapeSize);
-			}
-			stroke(0);
-			ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
-		}
-	}
-}
-
-function drawGridSquares(thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
-	for (var x=0; x<thisGridSize; x++) {
-		for(var y=0; y<thisGridSize; y++){
-			var xPos = x * (width/thisGridSize);
-			var yPos = y * (width/thisGridSize);
+function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 50;
+	var textXMax = (width/2) + (thisWidth/2) + 50;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var gridGrid = width/thisGridSize;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			var xPos = x;
+			var yPos = y;
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
 			if( textColour[0] == 0 ){
-				rect(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
+				if(onGrid){
+					ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
+				}else{
+					ellipse(xPos+xOffset+randomOffset, yPos+yOffset+randomOffset, shapeSize, shapeSize);
+				}
 			}
 		}
 	}
 }
 
-function drawRandoSquares(xOffset, yOffset){
-	for (var i=0; i<3000; i++) {
-		var xPos = random(canvasWidth);
-		var yPos = random(100, 600);
-		var textColour = pg.get(xPos, yPos);
-		var shapeSize = random(minSize, maxSize);
-		if( textColour[0] == 0 ){
-			rect(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
-		}
-	}
-}
-
-
-function drawGridCircles(thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
-	for (var x=0; x<thisGridSize; x++) {
-		for(var y=0; y<thisGridSize; y++){
-			var xPos = x * (width/thisGridSize);
-			var yPos = y * (width/thisGridSize);
+function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 50;
+	var textXMax = (width/2) + (thisWidth/2) + 50;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var gridGrid = width/thisGridSize;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			var xPos = x;
+			var yPos = y;
 			var textColour = pg.get(xPos, yPos);
 			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
 			if( textColour[0] == 0 ){
-				ellipse(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
+				if(onGrid){
+					rect(xPos+xOffset, yPos+yOffset, shapeSize, shapeSize);
+				}else{
+					rect(xPos+xOffset+randomOffset, yPos+yOffset+randomOffset, shapeSize, shapeSize);
+				}
 			}
 		}
 	}
 }
+
+function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
+
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 50;
+	var textXMax = (width/2) + (thisWidth/2) + 50;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var gridGrid = width/thisGridSize;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			var xPos = x;
+			var yPos = y;
+			var textColour = pg.get(xPos, yPos);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var radius = shapeSize/2;
+			stroke(colour);
+			// strokeWeight(2);
+			if( textColour[0] == 0 ){
+				if(onGrid){
+					line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
+					line(xPos+xOffset-radius, yPos+yOffset+radius, xPos+xOffset+radius, yPos+yOffset-radius);
+				}else{
+					stroke(colour);
+					line(xPos+xOffset+randomOffset-radius, yPos+randomOffset+yOffset-radius, xPos+randomOffset+xOffset+radius, yPos+randomOffset+yOffset+radius);
+					line(xPos+xOffset+randomOffset-radius, yPos+randomOffset+yOffset+radius, xPos+randomOffset+xOffset+radius, yPos+randomOffset+yOffset-radius);
+				}
+			}
+		}
+	}
+}
+
+function polygon(x, y, radius, npoints) {
+  var angle = TWO_PI / npoints;
+  beginShape();
+  for (var a = 0; a < TWO_PI; a += angle) {
+    var sx = x + cos(a) * radius;
+    var sy = y + sin(a) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
+function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 50;
+	var textXMax = (width/2) + (thisWidth/2) + 50;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
+	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var gridGrid = width/thisGridSize;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			var xPos = x;
+			var yPos = y;
+			var textColour = pg.get(xPos, yPos);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
+			if( textColour[0] == 0 ){
+				if(onGrid){
+					polygon(xPos+xOffset, yPos+yOffset, shapeSize*0.6, 6);
+				}else{
+					polygon(xPos+xOffset+randomOffset, yPos+yOffset+randomOffset, shapeSize*0.6, 6);
+				}
+			}
+		}
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// CLASS LAYER
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-function Layer() {
+function Layer(){
 	this.xOffset = 0;
 	this.yOffset = 0;
-	this.styleMode = "plain";
-	this.font;
-	this.colour = color(0,0,0);
+	this.styleMode = "normal";
+	this.font = "Georgia";
+	this.colour = color(0,0,0,100);
 	this.grid = 80;
 	this.stroke;
+	this.opacity = false;
 	this.minShapeSize = 5;
 	this.maxShapeSize = 10;
+	this.onGrid = true;
 
 	this.display = function(){
+
 		if(this.stroke){
 			stroke(100);
 		}else{
 			noStroke();
 		}
 
-		fill(this.colour);
-		if(this.styleMode=="gridCircles"){
-			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
-		}else if(this.styleMode=="randoCircles"){
-			drawRandoCircles(this.xOffset, this.yOffset);
-		}else if(this.styleMode=="weirdoCircles"){
-			drawWeirdoCircles(this.xOffset, this.yOffset);
-		}else if(this.styleMode=="gridSquares"){
-			drawGridSquares(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
-		}else if(this.styleMode=="randoSquares"){
-			drawRandoSquares(this.xOffset, this.yOffset);
-		}else if(this.styleMode=="plain"){
-			drawNormal(this.xOffset, this.yOffset);
+		if(this.opacity){
+			fill(this.colour);
 		}else{
-			drawGridCircles(this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
+			noFill();
+		}
+
+		fill(this.colour);
+		if(this.styleMode=="circles"){
+			drawCircles(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
+		}else if(this.styleMode=="squares"){
+			drawSquares(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
+		}else if(this.styleMode=="exes"){
+			drawExes(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset, this.colour);
+		}else if(this.styleMode=="polygons"){
+			drawPolygons(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
+		}else if(this.styleMode=="normal"){
+			drawNormal(this.xOffset, this.yOffset, this.font);
+		}else{
+			drawNormal(this.xOffset, this.yOffset, this.font);
 		}
 	};
 
-
 }//end class Layer
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// COLOURS
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 /*
 * hexToRgb function from 
@@ -387,11 +461,15 @@ function hexToRgb(hex) {
     } : null;
 }
 
+var alphaVal = 150;
+//set colour of colour box from object later.  
+var colourBoxColour;// = $("#colourTextBox").val();
+// layers[current]
 function getColour(){
-	var colourBoxColour = $("#colourTextBox").val();
-	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, 150);
+	colourBoxColour = $("#colourTextBox").val();
+	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, alphaVal);
 	textFillColour = rgbFillColour;
-	console.log(textFillColour);
+	// console.log(textFillColour);
 	draw();
 	return textFillColour;
 	// return rgbFillColour;
@@ -400,29 +478,21 @@ $('#colourTextBox').on('change', getColour);
 
 // getText();
 function getText(){
-	console.log("running");
 	var textBoxResult = $("#textBox").val();
-	console.log(textBoxResult);
-
+	if(textBoxResult==""){
+		textBosResult = " ";
+	}
+	// console.log(textBoxResult);
 	myType = textBoxResult;
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textSize(getTextSize());
 	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, 500);
+	pg.text(myType, canvasWidth/2, canvasHeight/2);
 
 	draw();
 }
 $('#textBox').keyup(getText);
-
-
-
-
-
-
-
-
-
 
 
