@@ -22,7 +22,7 @@ var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 var pg;
 var myType = "TEST";
-var font = "Georgia";
+var font = "Helvetica";
 var insideText = false;
 var style = "normal";
 var minSize = 10;
@@ -34,6 +34,7 @@ var xOffset = 0;
 var yOffset = 0;
 var structure = true;
 var layerCount = 1;
+var strokeShow = false;
 
 var currentLayer = 0;
 // var layerTemp = new Layer();
@@ -202,7 +203,7 @@ function draw(){
 	layers[currentLayer].minShapeSize = minSize;
 	layers[currentLayer].maxShapeSize = maxSize;
 	layers[currentLayer].font = font;
-	layers[currentLayer].stroke = false;
+	layers[currentLayer].stroke = strokeShow;
 	layers[currentLayer].xOffset = xOffset;
 	layers[currentLayer].yOffset = yOffset;
 
@@ -221,6 +222,18 @@ function switchLayers(layerNumber){
 	currentLayer = parseInt(layerNumber, 10);
 	$(".layer").removeClass("active");
 	$("#layer"+currentLayer).addClass("active");
+
+	style = layers[currentLayer].styleMode;
+	textFillColour = layers[currentLayer].colour;
+	gridSize = layers[currentLayer].grid;
+	structure = layers[currentLayer].onGrid;
+	minSize = layers[currentLayer].minShapeSize;
+	maxSize = layers[currentLayer].maxShapeSize;
+	font = layers[currentLayer].font;
+	strokeShow = layers[currentLayer].stroke;
+	xOffset = layers[currentLayer].xOffset;
+	yOffset = layers[currentLayer].yOffset;
+
 
 	return currentLayer;
 }
@@ -403,10 +416,10 @@ function Layer(){
 	this.xOffset = 0;
 	this.yOffset = 0;
 	this.styleMode = "normal";
-	this.font = "Georgia";
+	this.font = font;
 	this.colour = color(0,0,0,100);
 	this.grid = 80;
-	this.stroke;
+	this.stroke = strokeShow;
 	this.opacity = false;
 	this.minShapeSize = 5;
 	this.maxShapeSize = 10;
