@@ -169,18 +169,21 @@ function setup(){
 		layers[i] = new Layer();
 	}
 
-	// layerTemp = layers[1];
+	createCanvas(canvasWidth, canvasHeight);
 	
 	//draw word to pgraphic 
-	createCanvas(canvasWidth, canvasHeight);
 	pg = createGraphics(canvasWidth,canvasHeight+20);
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textFont(font);
+	// pg.textSize(getTextSize());
+	// pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
-	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
+	pg.textLeading(getTextSize());
+	pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , 600,canvasHeight-100);
+
+	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4), 30, 30);
 
 	rectMode(CENTER);
 }
@@ -192,8 +195,10 @@ function setup(){
 function draw(){
 
 	background(255);	
+	image(pg, 0, 0);
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
+	console.log(textsize);
 
 	// image(pg, 0, 0)
 	layers[currentLayer].styleMode = style;
@@ -276,6 +281,9 @@ function getTextSize(){
 		textsize = (canvasWidth/textLength)*1.6;
 	}if(ratio<0.5){
 		textsize = (canvasWidth/textLength)*2;
+	}
+	if(textsize <= 80){
+		textsize = 80;
 	}
 	return textsize;
 
