@@ -180,6 +180,7 @@ function setup(){
 	}
 	
 	createCanvas(canvasWidth, canvasHeight);
+	pg = createGraphics(canvasWidth,canvasHeight+20);
 	
 	createImage();
 	draw();
@@ -189,7 +190,6 @@ function setup(){
 function createImage(){
 
 	// createImage();
-	pg = createGraphics(canvasWidth,canvasHeight+20);
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
@@ -197,11 +197,9 @@ function createImage(){
 	pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
-	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
 	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 	rectMode(CENTER);
 
-	// draw();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// DRAW
@@ -210,10 +208,8 @@ function createImage(){
 function draw(){
 
 	background(255);	
-	// image(pg, 0, 0);
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
-	console.log(textsize);
 
 	// image(pg, 0, 0)
 	layers[currentLayer].styleMode = style;
@@ -536,7 +532,7 @@ $('#colourTextBox').on('change', getColour);
 function getText(){
 	var textBoxResult = $("#textBox").val();
 	if(textBoxResult==""){
-		textBosResult = " ";
+		textBoxResult = " ";
 	}
 	// console.log(textBoxResult);
 	myType = textBoxResult;
@@ -548,7 +544,7 @@ function getText(){
 	pg.textAlign(CENTER);
 	pg.text(myType, canvasWidth/2, canvasHeight/2);
 	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
-
+	// createImage();
 	draw();
 }
 $('#textBox').keyup(getText);
