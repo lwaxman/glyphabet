@@ -18,6 +18,8 @@
 *
 */
 
+
+
 var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 var pg;
@@ -101,6 +103,14 @@ $("#layers").on("click", ".edit", function(){
 });
 
 
+$(window).resize(function(){
+	console.log("resizing: " + $(window).width());
+	canvasWidth = $(window).width() - 310;
+	canvasHeight = $(window).height() - 10;
+	createCanvas(canvasWidth, canvasHeight);
+	createImage();
+	draw();
+});
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SLIDERS
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,26 +178,31 @@ function setup(){
 	for(var i=0; i<5; i++){
 		layers[i] = new Layer();
 	}
-
+	
 	createCanvas(canvasWidth, canvasHeight);
 	
-	//draw word to pgraphic 
+	createImage();
+	draw();
+}
+
+
+function createImage(){
+
+	// createImage();
 	pg = createGraphics(canvasWidth,canvasHeight+20);
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textFont(font);
-	// pg.textSize(getTextSize());
-	// pg.textAlign(CENTER);
+	pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
-	pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , 600,canvasHeight-100);
-
-	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4), 30, 30);
-
+	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
+	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 	rectMode(CENTER);
-}
 
+	// draw();
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// DRAW
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +210,7 @@ function setup(){
 function draw(){
 
 	background(255);	
-	image(pg, 0, 0);
+	// image(pg, 0, 0);
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
 	console.log(textsize);
@@ -221,7 +236,22 @@ function draw(){
 //////////////////////////////////////////////////////////////////////////////////////////////// LAYER CONTROLS
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
 
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function getHexValue(colour){
+	console.log(colour);
+	console.log("r: " + colour[0]);
+	console.log("g: " + colour[1]);
+	console.log("b: " + colour[2]);
+// 	return rgbToHex(colour[0], colour[1], colour[2]);
+}
 
 function switchLayers(layerNumber){
 	currentLayer = parseInt(layerNumber, 10);
@@ -239,6 +269,8 @@ function switchLayers(layerNumber){
 	xOffset = layers[currentLayer].xOffset;
 	yOffset = layers[currentLayer].yOffset;
 
+	getHexValue(textFillColour);
+	// $("#colourTextBox").val(  );
 
 	return currentLayer;
 }
@@ -293,7 +325,10 @@ function drawNormal(xOffset, yOffset, font){
 	textSize(getTextSize());
 	textFont(font);
 	textAlign(CENTER);
+	// text(myType, 0+xOffset, 0+yOffset, 600, 600);
+	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
 }
 
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
@@ -509,8 +544,10 @@ function getText(){
 	pg.noStroke();
 	pg.fill(0);
 	pg.textSize(getTextSize());
+	pg.textLeading(getTextSize());
 	pg.textAlign(CENTER);
 	pg.text(myType, canvasWidth/2, canvasHeight/2);
+	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
 
 	draw();
 }
