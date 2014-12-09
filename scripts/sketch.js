@@ -42,6 +42,8 @@ var currentLayer = 0;
 // var layerTemp = new Layer();
 var layers = [];
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +109,10 @@ $(window).resize(function(){
 	console.log("resizing: " + $(window).width());
 	canvasWidth = $(window).width() - 310;
 	canvasHeight = $(window).height() - 10;
+
+	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth;
+	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
+
 	createCanvas(canvasWidth, canvasHeight);
 	createImage();
 	draw();
@@ -173,33 +179,44 @@ $("#yOffset").val( $("#yOffset-range").slider("values",0));
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 function setup(){
-	textFillColour = color(25,212,255, 150);
+
+	textFillColour = color(0,0,0, 150);
+	rectMode(CENTER);
 
 	for(var i=0; i<5; i++){
 		layers[i] = new Layer();
 	}
 	
+	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth; 
+	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
 	createCanvas(canvasWidth, canvasHeight);
 	pg = createGraphics(canvasWidth,canvasHeight+20);
-	
+	getText();
 	createImage();
-	draw();
-}
 
+}
 
 function createImage(){
 
-	// createImage();
-	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textFont(font);
-	pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
+	console.log("creatingImage");
+	pg.textAlign(CENTER);
 	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
-	rectMode(CENTER);
 
+	draw();
+	// if(myType.split("").length<22){
+	// 	console.log("less than 22");
+	// 	pg.textAlign(CENTER);
+	// 	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// }else{
+	// 	console.log("greater than 22");
+	// 	pg.textAlign(LEFT);
+	// 	pg.text(myType, 0, 0, canvasWidth-100, canvasHeight-100);
+	// }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// DRAW
@@ -211,7 +228,7 @@ function draw(){
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
 
-	// image(pg, 0, 0)
+	// image(pg, 0, 0);
 	layers[currentLayer].styleMode = style;
 	layers[currentLayer].colour = textFillColour;
 	layers[currentLayer].grid = gridSize;
@@ -265,9 +282,8 @@ function switchLayers(layerNumber){
 	xOffset = layers[currentLayer].xOffset;
 	yOffset = layers[currentLayer].yOffset;
 
-	getHexValue(textFillColour);
+	// getHexValue(textFillColour);
 	// $("#colourTextBox").val(  );
-
 	return currentLayer;
 }
 
@@ -275,6 +291,7 @@ function addNewLayer(){
 	$("#layers").append("<div class='layer' id='layer"+ layerCount +"'><div class='layerName'>LAYER"+ layerCount +"</div><div class='edit'></div></div>" );
 	switchLayers(layerCount);
 	layerCount++;
+	draw();
 	return layerCount;
 }
 
@@ -292,6 +309,7 @@ $("#layers").on("click", ".layer", function(){
 	$("#layer"+layerNumber).addClass("active");
 	console.log("#layer"+layerNumber);
 	switchLayers(layerNumber);
+
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -310,9 +328,19 @@ function getTextSize(){
 	}if(ratio<0.5){
 		textsize = (canvasWidth/textLength)*2;
 	}
-	if(textsize <= 80){
-		textsize = 80;
-	}
+	// if(myType.split("").length<22){
+	// 	console.log("getTextSize: less than 22 char");
+	// 	if(ratio<0.7 && ratio>=0.5){
+	// 		textsize = (canvasWidth/textLength)*1.6;
+	// 	}if(ratio<0.5){
+	// 		textsize = (canvasWidth/textLength)*2;
+	// 	}
+	// }else{
+	// 	console.log("getTextSize: greater than 22 char");
+	// 	textsize = 80;
+	// }
+
+	console.log(textsize);
 	return textsize;
 
 }
@@ -324,10 +352,25 @@ function drawNormal(xOffset, yOffset, font){
 	// text(myType, 0+xOffset, 0+yOffset, 600, 600);
 	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
-	// pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
+	// textFont(font);
+	// console.log("drawNormal textSize: " + getTextSize());
+	// if(myType.split("").length<22){
+	// 	console.log("drawing normal big");
+	// 	textAlign(CENTER);
+	// 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(getTextSize()*0.4)+yOffset);
+	// }else if(myType.split("").length>=22){
+	// 	textSize(80);
+	// 	console.log("drawing normal small");
+	// 	textAlign(LEFT);
+	// 	// fill(255,0,0);
+	// 	console.log("c-width: "+canvasWidth);
+	// 	console.log("c-height: "+canvasHeight);
+	// 	text(myType, 100, 100);
+	// }
 }
 
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -353,6 +396,7 @@ function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 }
 
 function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -378,7 +422,7 @@ function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 }
 
 function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
-
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -421,7 +465,7 @@ function polygon(x, y, radius, npoints) {
   endShape(CLOSE);
 }
 function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
-	
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -478,6 +522,7 @@ function Layer(){
 			noFill();
 		}
 
+		textSize(getTextSize());
 		fill(this.colour);
 		if(this.styleMode=="circles"){
 			drawCircles(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
@@ -528,7 +573,6 @@ function getColour(){
 }
 $('#colourTextBox').on('change', getColour);
 
-// getText();
 function getText(){
 	var textBoxResult = $("#textBox").val();
 	if(textBoxResult==""){
@@ -539,13 +583,29 @@ function getText(){
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
+	pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
-	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, canvasHeight/2);
+	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+
+	createImage();
+	draw();
+
+	// return 
+	// console.log("gettingText");
+	// if(myType.split("").length<22){
+	// 	// console.log("less than 22: " + getTextSize());
+	// 	pg.textAlign(CENTER);
+	// 	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// }else{
+	// 	pg.textSize(getTextSize());
+	// 	pg.textLeading(getTextSize());
+	// 	// console.log("greater than 22: " + getTextSize())
+	// 	pg.textAlign(LEFT);
+	// 	pg.text(myType, 100, 100, 800, 800);
+	// }
 	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
 	// createImage();
-	draw();
 }
 $('#textBox').keyup(getText);
 
