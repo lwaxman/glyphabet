@@ -5,12 +5,21 @@ body {
   color: #808396;
   font-weight: 400;
 }
-canvas {
+.floatAllMiddle {
   margin: 0 auto;
+}
+#logoCircle {
+  position: relative;
+  top: 30px;
+}
+canvas {
   border: 2px solid #eee;
   position: relative;
   display: inline-block;
   visibility: visible;
+}
+#canvasContainer {
+  display: inline-block;
 }
 .active {
   color: #46b1f9;
@@ -47,6 +56,11 @@ canvas {
 }
 #slider1 input#shapeSize {
   color: blue;
+}
+#styleControl div {
+  width: 50px;
+  height: 30px;
+  display: inline-block;
 }
 .allign {
   width: 300px;
@@ -107,10 +121,23 @@ div.styleMode {
   border: 2px solid #fff;
 }
 #colourTextBox {
+  margin: 20px 0;
   border: 2px solid #c4c6d6;
-  padding: 10px;
+  padding: 6px 10px;
   width: 180px;
   border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+#textBox {
+  margin: 50px 0 20px 0;
+  padding: 6px 10px;
+  width: 180px;
+  border-radius: 10px;
+  border: 2px solid #c4c6d6;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #808396;
 }
 #newLayer {
   display: inline-block;

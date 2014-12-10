@@ -18,6 +18,8 @@
 *
 */
 
+
+
 var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 var pg;
@@ -39,6 +41,9 @@ var strokeShow = false;
 var currentLayer = 0;
 // var layerTemp = new Layer();
 var layers = [];
+
+// if(canvasHeight>canvasWidth) $(".floatAllMiddle").css("width", canvasWidth);
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
@@ -101,6 +106,25 @@ $("#layers").on("click", ".edit", function(){
 });
 
 
+$(window).resize(function(){
+	console.log("resizing: " + $(window).width());
+	canvasWidth = $(window).width() - 310;
+	canvasHeight = $(window).height() - 10;
+
+	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth;
+	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
+
+
+
+	createCanvas(canvasWidth, canvasHeight);
+	// $(".floatAllMiddle").css("width", canvasWidth+250)
+	// createImage();
+	getText();
+	draw();
+});
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SLIDERS
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,28 +185,40 @@ $("#yOffset").val( $("#yOffset-range").slider("values",0));
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SETUP
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
+var myCanvas;
 function setup(){
-	textFillColour = color(25,212,255, 150);
+	textFillColour = color(0,0,0, 150);
+	rectMode(CENTER);
 
 	for(var i=0; i<5; i++){
 		layers[i] = new Layer();
 	}
-
-	// layerTemp = layers[1];
 	
-	//draw word to pgraphic 
+	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth; 
+	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
+
 	createCanvas(canvasWidth, canvasHeight);
+	// myCanvas.parent("canvasContainer");
+
 	pg = createGraphics(canvasWidth,canvasHeight+20);
-	pg.background(255);
+	getText();
+	// createImage();
+
+}
+
+function createImage(){
+
+	console.log("creatingImage "+canvasWidth+" "+canvasHeight);
 	pg.noStroke();
 	pg.fill(0);
 	pg.textFont(font);
 	pg.textSize(getTextSize());
+	pg.textLeading(getTextSize());
 	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, (canvasHeight/2)+(textsize*0.4));
+	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 
-	rectMode(CENTER);
+	draw();
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +231,7 @@ function draw(){
 	noLoop();
 	console.log("draw(): current layer = "+ currentLayer);
 
-	// image(pg, 0, 0)
+	// image(pg, 0, 0);
 	layers[currentLayer].styleMode = style;
 	layers[currentLayer].colour = textFillColour;
 	layers[currentLayer].grid = gridSize;
@@ -216,7 +252,22 @@ function draw(){
 //////////////////////////////////////////////////////////////////////////////////////////////// LAYER CONTROLS
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
 
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function getHexValue(colour){
+	console.log(colour);
+	console.log("r: " + colour[0]);
+	console.log("g: " + colour[1]);
+	console.log("b: " + colour[2]);
+// 	return rgbToHex(colour[0], colour[1], colour[2]);
+}
 
 function switchLayers(layerNumber){
 	currentLayer = parseInt(layerNumber, 10);
@@ -234,7 +285,8 @@ function switchLayers(layerNumber){
 	xOffset = layers[currentLayer].xOffset;
 	yOffset = layers[currentLayer].yOffset;
 
-
+	// getHexValue(textFillColour);
+	// $("#colourTextBox").val(  );
 	return currentLayer;
 }
 
@@ -242,6 +294,7 @@ function addNewLayer(){
 	$("#layers").append("<div class='layer' id='layer"+ layerCount +"'><div class='layerName'>LAYER"+ layerCount +"</div><div class='edit'></div></div>" );
 	switchLayers(layerCount);
 	layerCount++;
+	draw();
 	return layerCount;
 }
 
@@ -259,10 +312,11 @@ $("#layers").on("click", ".layer", function(){
 	$("#layer"+layerNumber).addClass("active");
 	console.log("#layer"+layerNumber);
 	switchLayers(layerNumber);
+
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////// FUNCTIONS
+//////////////////////////////////////////////////////////////////////////////////////////////// SHAPE FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 function getTextSize(){
@@ -277,6 +331,19 @@ function getTextSize(){
 	}if(ratio<0.5){
 		textsize = (canvasWidth/textLength)*2;
 	}
+	// if(myType.split("").length<22){
+	// 	console.log("getTextSize: less than 22 char");
+	// 	if(ratio<0.7 && ratio>=0.5){
+	// 		textsize = (canvasWidth/textLength)*1.6;
+	// 	}if(ratio<0.5){
+	// 		textsize = (canvasWidth/textLength)*2;
+	// 	}
+	// }else{
+	// 	console.log("getTextSize: greater than 22 char");
+	// 	textsize = 80;
+	// }
+
+	console.log(textsize);
 	return textsize;
 
 }
@@ -285,10 +352,28 @@ function drawNormal(xOffset, yOffset, font){
 	textSize(getTextSize());
 	textFont(font);
 	textAlign(CENTER);
+	// text(myType, 0+xOffset, 0+yOffset, 600, 600);
+	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// textFont(font);
+	// console.log("drawNormal textSize: " + getTextSize());
+	// if(myType.split("").length<22){
+	// 	console.log("drawing normal big");
+	// 	textAlign(CENTER);
+	// 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(getTextSize()*0.4)+yOffset);
+	// }else if(myType.split("").length>=22){
+	// 	textSize(80);
+	// 	console.log("drawing normal small");
+	// 	textAlign(LEFT);
+	// 	// fill(255,0,0);
+	// 	console.log("c-width: "+canvasWidth);
+	// 	console.log("c-height: "+canvasHeight);
+	// 	text(myType, 100, 100);
+	// }
 }
 
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -314,6 +399,7 @@ function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 }
 
 function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -339,7 +425,7 @@ function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 }
 
 function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
-
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -382,7 +468,7 @@ function polygon(x, y, radius, npoints) {
   endShape(CLOSE);
 }
 function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
-	
+	// textSize(textsize);
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
@@ -439,6 +525,7 @@ function Layer(){
 			noFill();
 		}
 
+		textSize(getTextSize());
 		fill(this.colour);
 		if(this.styleMode=="circles"){
 			drawCircles(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
@@ -476,35 +563,35 @@ function hexToRgb(hex) {
 
 var alphaVal = 150;
 //set colour of colour box from object later.  
+
 var colourBoxColour;// = $("#colourTextBox").val();
-// layers[current]
 function getColour(){
 	colourBoxColour = $("#colourTextBox").val();
 	var rgbFillColour = color(hexToRgb(colourBoxColour).r, hexToRgb(colourBoxColour).g, hexToRgb(colourBoxColour).b, alphaVal);
 	textFillColour = rgbFillColour;
-	// console.log(textFillColour);
 	draw();
 	return textFillColour;
-	// return rgbFillColour;
 }
 $('#colourTextBox').on('change', getColour);
 
-// getText();
 function getText(){
 	var textBoxResult = $("#textBox").val();
 	if(textBoxResult==""){
-		textBosResult = " ";
+		textBoxResult = " ";
 	}
-	// console.log(textBoxResult);
+
 	myType = textBoxResult;
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
-	pg.textSize(getTextSize());
 	pg.textAlign(CENTER);
-	pg.text(myType, canvasWidth/2, canvasHeight/2);
+	pg.textSize(getTextSize());
+	pg.textLeading(getTextSize());
+	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 
+	// createImage();
 	draw();
+
 }
 $('#textBox').keyup(getText);
 
