@@ -5,16 +5,21 @@ body {
   color: #808396;
   font-weight: 400;
 }
+.floatAllMiddle {
+  margin: 0 auto;
+}
 #logoCircle {
   position: relative;
   top: 30px;
 }
 canvas {
-  margin: 0 auto;
   border: 2px solid #eee;
   position: relative;
   display: inline-block;
   visibility: visible;
+}
+#canvasContainer {
+  display: inline-block;
 }
 .active {
   color: #46b1f9;
@@ -51,6 +56,11 @@ canvas {
 }
 #slider1 input#shapeSize {
   color: blue;
+}
+#styleControl div {
+  width: 50px;
+  height: 30px;
+  display: inline-block;
 }
 .allign {
   width: 300px;
