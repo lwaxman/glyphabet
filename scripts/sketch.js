@@ -7,14 +7,17 @@
 *
 	TO DO: 
 		+ seperate layers (layers[0] = layers[1], etc)
-		/+ select layer
+		+ select layer
 		+ add new layer
 		+ array of layers?
 		+ normal style
 		+ position layer
-		add new line of text
-		create slider control for alpha value
+		/ add new line of text
+		+ create slider control for alpha value
 		+ fix check for black area
+		hide/show controls
+		update sliders when layer switched
+		change font
 *
 */
 
@@ -24,7 +27,7 @@ var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 var pg;
 var myType = "TEXT";
-var font = "FairplexNarrowBookItalic";
+var font = "FairplexNarrowBold";
 var insideText = false;
 var style = "normal";
 var minSize = 10;
