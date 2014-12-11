@@ -37,7 +37,7 @@ var yOffset = 0;
 var structure = true;
 var layerCount = 1;
 var strokeShow = false;
-
+var alphaVal = 255;
 var currentLayer = 0;
 // var layerTemp = new Layer();
 var layers = [];
@@ -114,8 +114,6 @@ $(window).resize(function(){
 	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth;
 	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
 
-
-
 	createCanvas(canvasWidth, canvasHeight);
 	// $(".floatAllMiddle").css("width", canvasWidth+250)
 	// createImage();
@@ -182,6 +180,20 @@ $("#yOffset-range").slider({
 });
 $("#yOffset").val( $("#yOffset-range").slider("values",0));
 
+$("#opacity-range").slider({
+	value: 180,
+	min: 0,
+	max: 255,
+	range: "min",
+	slide: function( event, ui ) {
+		$("#opacity").val( ui.value);
+		alphaVal = ui.value;
+		getColour();
+		draw();
+	}
+});
+$("#opacity").val( $("#opacity-range").slider("values",0));
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SETUP
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +202,7 @@ function setup(){
 	textFillColour = color(0,0,0, 150);
 	rectMode(CENTER);
 
-	for(var i=0; i<5; i++){
+	for(var i=0; i<8; i++){
 		layers[i] = new Layer();
 	}
 	
@@ -229,7 +241,7 @@ function draw(){
 
 	background(255);	
 	noLoop();
-	console.log("draw(): current layer = "+ currentLayer);
+	// console.log("draw(): current layer = "+ currentLayer);
 
 	// image(pg, 0, 0);
 	layers[currentLayer].styleMode = style;
@@ -242,6 +254,7 @@ function draw(){
 	layers[currentLayer].stroke = strokeShow;
 	layers[currentLayer].xOffset = xOffset;
 	layers[currentLayer].yOffset = yOffset;
+	layers[currentLayer].alpha = alphaVal;
 
 	for(var j=0; j<layerCount; j++){
 		layers[j].display();
@@ -258,15 +271,13 @@ function componentToHex(c) {
 }
 
 function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	// console.log("hexColour #"+ componentToHex(r) + componentToHex(g) + componentToHex(b));
+    return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 function getHexValue(colour){
-	console.log(colour);
-	console.log("r: " + colour[0]);
-	console.log("g: " + colour[1]);
-	console.log("b: " + colour[2]);
-// 	return rgbToHex(colour[0], colour[1], colour[2]);
+	// console.log(colour);
+	return rgbToHex(colour.rgba[0], colour.rgba[1], colour.rgba[2]);
 }
 
 function switchLayers(layerNumber){
@@ -285,8 +296,9 @@ function switchLayers(layerNumber){
 	xOffset = layers[currentLayer].xOffset;
 	yOffset = layers[currentLayer].yOffset;
 
-	// getHexValue(textFillColour);
-	// $("#colourTextBox").val(  );
+	var setColour = getHexValue(layers[currentLayer].colour);
+	$("#colourTextBox").val(setColour);
+	$("#colourTextBox").css("background", "#"+setColour);
 	return currentLayer;
 }
 
@@ -343,7 +355,7 @@ function getTextSize(){
 	// 	textsize = 80;
 	// }
 
-	console.log(textsize);
+	// console.log(textsize);
 	return textsize;
 
 }
@@ -510,6 +522,7 @@ function Layer(){
 	this.minShapeSize = 5;
 	this.maxShapeSize = 10;
 	this.onGrid = true;
+	this.alpha = 180;
 
 	this.display = function(){
 
@@ -561,7 +574,7 @@ function hexToRgb(hex) {
     } : null;
 }
 
-var alphaVal = 150;
+
 //set colour of colour box from object later.  
 
 var colourBoxColour;// = $("#colourTextBox").val();

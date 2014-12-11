@@ -90,7 +90,8 @@ div.styleMode {
 #shapeSize-range,
 #gridSize-range,
 #xOffset-range,
-#yOffset-range {
+#yOffset-range,
+#opacity-range {
   width: 200px;
   height: 19px;
   background: #808396;
@@ -100,14 +101,16 @@ div.styleMode {
 #gridSize-range .ui-slider-range,
 #shapeSize-range .ui-slider-range,
 #xOffset-range .ui-slider-range,
-#yOffset-range .ui-slider-range {
+#yOffset-range .ui-slider-range,
+#opacity-range .ui-slider-range {
   background: #46b1f9;
   border-radius: 10px;
 }
 #gridSize-range .ui-slider-handle,
 #shapeSize-range .ui-slider-handle,
 #xOffset-range .ui-slider-handle,
-#yOffset-range .ui-slider-handle {
+#yOffset-range .ui-slider-handle,
+#opacity-range .ui-slider-handle {
   margin-top: 3px;
   background: #46b1f9;
   border: 2px solid #3789db;
@@ -116,7 +119,8 @@ div.styleMode {
 #gridSize-range .ui-state-active,
 #shapeSize-range .ui-state-active,
 #xOffset-range .ui-state-active,
-#yOffset-range .ui-state-active {
+#yOffset-range .ui-state-active,
+#opacity-range .ui-state-active {
   background: #46b1f9;
   border: 2px solid #fff;
 }
