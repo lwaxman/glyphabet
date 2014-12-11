@@ -6,7 +6,9 @@ body {
   font-weight: 400;
 }
 .floatAllMiddle {
+  border: 2px solid blue;
   margin: 0 auto;
+  display: inline-block;
 }
 #logoCircle {
   position: relative;
@@ -14,9 +16,30 @@ body {
 }
 canvas {
   border: 2px solid #eee;
-  position: relative;
-  display: inline-block;
-  visibility: visible;
+}
+#save {
+  border-radius: 20px;
+  width: 100px;
+  background: #46b1f9;
+  padding: 5px;
+  color: white;
+  margin: 10px auto;
+}
+#save:hover {
+  background: #3789db;
+}
+#viewFeed {
+  border-radius: 20px;
+  width: 100px;
+  background: #808396;
+  padding: 5px;
+  color: white;
+  margin: 0 auto;
+}
+#bottomButtons {
+  width: 250px;
+  position: absolute;
+  bottom: 20px;
 }
 #canvasContainer {
   display: inline-block;
@@ -27,6 +50,7 @@ canvas {
 }
 .layerName {
   display: inline-block;
+  padding: 0 10px;
 }
 .edit {
   display: inline-block;
@@ -42,7 +66,7 @@ canvas {
 }
 .styleControls {
   background: rgba(70, 177, 249, 0.2);
-  width: 300px;
+  width: 250px;
   display: inline-block;
   height: 100vh;
   vertical-align: top;
@@ -58,20 +82,50 @@ canvas {
   color: blue;
 }
 #styleControl div {
-  width: 50px;
+  width: 47px;
   height: 30px;
   display: inline-block;
 }
+#fontMenu {
+  margin: 0;
+  margin-left: -45px;
+  text-decoration: none;
+  list-style: none;
+  border-top: 1px dashed rgba(128, 131, 150, 0.6);
+  border-bottom: 1px dashed rgba(128, 131, 150, 0.6);
+}
+#fontMenu li {
+  width: 60px;
+  height: 30px;
+  vertical-align: top;
+  line-height: 20px;
+  padding-top: 5px;
+  display: inline-block;
+  text-align: center;
+  font-size: 24pt;
+}
+#sansSerif {
+  font-family: "Helvetica", sans-serif;
+}
+#serif {
+  font-family: "Georgia", serif;
+}
+#monospace {
+  font-family: "monospace", monospace;
+}
+#brushScript {
+  font-family: "brush script", cursive;
+}
 .allign {
-  width: 300px;
+  width: 250px;
   margin: 0 auto;
   border-bottom: 1px dashed rgba(128, 131, 150, 0.6);
 }
 div.styleMode {
-  padding: 5px 0;
+  padding: 2px 0;
 }
 .layer {
-  padding: 10px 0;
+  padding: 5px 0;
   border-bottom: 1px dashed rgba(128, 131, 150, 0.6);
 }
 .create {
@@ -97,6 +151,13 @@ div.styleMode {
   background: #808396;
   border: none;
   border-radius: 10px;
+}
+#slider1 p,
+#slider2 p,
+#slider3 p,
+#slider4 p,
+#slider5 p {
+  margin-bottom: 2px;
 }
 #gridSize-range .ui-slider-range,
 #shapeSize-range .ui-slider-range,
@@ -146,7 +207,7 @@ div.styleMode {
 #newLayer {
   display: inline-block;
   vertical-align: middle;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 .plusIcon {
   display: inline-block;

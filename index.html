@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.10/p5.min.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900,100' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
+
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
 	</head>
@@ -18,7 +19,7 @@
 		<!-- <div class="floatAllMiddle"> -->
 			<div class="styleControls">
 					
-				<img src="images/logo-01.png" alt="glyphabetLogo" width="200" height="200" id="logoCircle">
+				<img src="images/logo-01.png" alt="glyphabetLogo" width="100" height="100" id="logoCircle">
 				<input id="textBox" type="text" value="TEXT">
 
 				<div id="styleControl">
@@ -78,15 +79,29 @@
 
 				<input class="color" id="colourTextBox" value="000000">
 
+				<div id="font">
+					<ul id="fontMenu">
+						<li class="fontStyle active" id="sansSerif">T</li>
+						<li class="fontStyle" id="serif">T</li>
+						<li class="fontStyle" id="monospace">T</li>
+						<li class="fontStyle" id="brushScript">T</li>
+					<ul>
+				</div>
+
 				<div id="layers">
 					<div class="layer active" id="layer0">
 						<div class="layerName">LAYER0</div><div class="edit"></div>
 					</div>
 				</div>
 				<div id="newLayer" class="allign"> <div class="plusIcon">+</div> LAYER </div>
+
+				<div id="bottomButtons">
+					<div id="save">SAVE</div>
+					<div id="viewFeed">VIEW FEED</div>
+				</div>
 			</div>
 
-			<!-- <div id="canvasContainer"></div> -->
+			<div id="canvasContainer"></div>
 		<!-- </div> -->
 
 		<script type="text/javascript" src="scripts/jscolor/jscolor.js"></script>

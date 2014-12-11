@@ -21,13 +21,13 @@
 *
 */
 
+var myCanvas;
 
-
-var canvasWidth = $(window).width() - 310;
-var canvasHeight = $(window).height() - 10;
+var windowWidth = $(window).width() - 310;
+var windowHeight = $(window).height() - 10;
 var pg;
 var myType = "TEXT";
-var font = "FairplexNarrowBold";
+var font = "Helvetica";
 var insideText = false;
 var style = "normal";
 var minSize = 10;
@@ -40,14 +40,14 @@ var yOffset = 0;
 var structure = true;
 var layerCount = 1;
 var strokeShow = false;
-var alphaVal = 255;
+var alphaVal = 180;
 var currentLayer = 0;
 // var layerTemp = new Layer();
 var layers = [];
 
-// if(canvasHeight>canvasWidth) $(".floatAllMiddle").css("width", canvasWidth);
-
-
+// if(windowHeight>windowWidth) $(".floatAllMiddle").css("width", windowWidth);
+// $(".floatAllMiddle").css("width", windowWidth+310);
+// 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +96,31 @@ $("#gridOff").on("click", function(){
 	draw();
 });
 
+$("#sansSerif").on("click", function(){ 
+	$(".fontStyle").removeClass("active");
+	$("#sansSerif").addClass("active");
+	font = "Helvetica";
+	draw();
+});
+$("#serif").on("click", function(){ 
+	$(".fontStyle").removeClass("active");
+	$("#serif").addClass("active");
+	font = "Georgia";
+	draw();
+});
+$("#monospace").on("click", function(){ 
+	$(".fontStyle").removeClass("active");
+	$("#monospace").addClass("active");
+	font = "monospace";
+	draw();
+});
+$("#brushScript").on("click", function(){ 
+	$(".fontStyle").removeClass("active");
+	$("#brushScript").addClass("active");
+	font = "Brush Script MT";
+	draw();
+});
+
 var editable = false;
 $("#layers").on("click", ".edit", function(){ 
 	editable = !editable;
@@ -108,18 +133,15 @@ $("#layers").on("click", ".edit", function(){
 	}
 });
 
-
 $(window).resize(function(){
 	console.log("resizing: " + $(window).width());
-	canvasWidth = $(window).width() - 310;
-	canvasHeight = $(window).height() - 10;
+	windowWidth = $(window).width() - 310;
+	windowHeight = $(window).height() - 10;
 
-	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth;
-	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
+	if(windowHeight>windowWidth) windowHeight = windowWidth;
+	else if(windowWidth>windowHeight) windowWidth = windowHeight;
 
-	createCanvas(canvasWidth, canvasHeight);
-	// $(".floatAllMiddle").css("width", canvasWidth+250)
-	// createImage();
+	createCanvas(windowWidth, windowHeight);
 	getText();
 	draw();
 });
@@ -200,7 +222,7 @@ $("#opacity").val( $("#opacity-range").slider("values",0));
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////// SETUP
 ////////////////////////////////////////////////////////////////////////////////////////////////
-var myCanvas;
+
 function setup(){
 	textFillColour = color(0,0,0, 150);
 	rectMode(CENTER);
@@ -209,32 +231,26 @@ function setup(){
 		layers[i] = new Layer();
 	}
 	
-	if(canvasHeight>canvasWidth) canvasHeight = canvasWidth; 
-	else if(canvasWidth>canvasHeight) canvasWidth = canvasHeight;
+	if(windowHeight>windowWidth) windowHeight = windowWidth;
+	else if(windowWidth>windowHeight) windowWidth = windowHeight;
 
-	createCanvas(canvasWidth, canvasHeight);
-	// myCanvas.parent("canvasContainer");
-
-	pg = createGraphics(canvasWidth,canvasHeight+20);
+	pg = createGraphics(windowWidth,windowHeight+20);
 	pg.textFont(font);
+
+	createCanvas(windowWidth, windowHeight);
 	getText();
-	// createImage();
-
-}
-
-function createImage(){
-
-	console.log("creatingImage "+canvasWidth+" "+canvasHeight);
-	// pg.noStroke();
-	// pg.fill(0);
-	// pg.textFont(font);
-	// pg.textSize(getTextSize());
-	pg.textLeading(getTextSize());
-	// pg.textAlign(CENTER);
-	// pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
-
 	draw();
+	
+	// if(windowHeight>windowWidth) windowHeight = windowWidth; 
+	// else if(windowWidth>windowHeight) windowWidth = windowHeight;
 
+	// createCanvas(windowWidth, windowHeight);
+	// myCanvas = createCanvas(windowWidth, windowHeight);
+	// myCanvas.parent("canvasContainer");
+	// createCanvas(windowWidth, windowHeight);
+	// getText();
+
+	getText();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,9 +261,8 @@ function draw(){
 
 	background(255,255,255);	
 	noLoop();
-	// console.log("draw(): current layer = "+ currentLayer);
-
 	// image(pg, 0, 0);
+	// console.log("draw(): current layer = "+ currentLayer);
 	layers[currentLayer].styleMode = style;
 	layers[currentLayer].colour = textFillColour;
 	layers[currentLayer].grid = gridSize;
@@ -338,21 +353,22 @@ $("#layers").on("click", ".layer", function(){
 function getTextSize(){
 	var textArray = myType.split("");
 	var textLength = textArray.length;
-	textsize = (canvasWidth/textLength)*1.2;
+	textsize = (windowWidth/textLength)*1.2;
+	textFont(font);
 	textSize(textsize);
 	var textwidth = textWidth(myType);
 	var ratio = textwidth/width;
 	if(ratio<0.7 && ratio>=0.5){
-		textsize = (canvasWidth/textLength)*1.6;
+		textsize = (windowWidth/textLength)*1.6;
 	}if(ratio<0.5){
-		textsize = (canvasWidth/textLength)*2;
+		textsize = (windowWidth/textLength)*2;
 	}
 	// if(myType.split("").length<22){
 	// 	console.log("getTextSize: less than 22 char");
 	// 	if(ratio<0.7 && ratio>=0.5){
-	// 		textsize = (canvasWidth/textLength)*1.6;
+	// 		textsize = (windowWidth/textLength)*1.6;
 	// 	}if(ratio<0.5){
-	// 		textsize = (canvasWidth/textLength)*2;
+	// 		textsize = (windowWidth/textLength)*2;
 	// 	}
 	// }else{
 	// 	console.log("getTextSize: greater than 22 char");
@@ -369,21 +385,21 @@ function drawNormal(xOffset, yOffset, font){
 	textFont(font);
 	textAlign(CENTER);
 	// text(myType, 0+xOffset, 0+yOffset, 600, 600);
-	// pg.text(myType, (canvasWidth/2)-(canvasWidth-200)/2, ((canvasHeight/2)+(textsize*0.4))-(canvasHeight-100)/4 , canvasWidth-200, canvasHeight-100)
-	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// pg.text(myType, (windowWidth/2)-(windowWidth-200)/2, ((windowHeight/2)+(textsize*0.4))-(windowHeight-100)/4 , windowWidth-200, windowHeight-100)
+	text(myType, (windowWidth/2)+xOffset, (windowHeight/2)+(textsize*0.4)+yOffset);
 	// textFont(font);
 	// console.log("drawNormal textSize: " + getTextSize());
 	// if(myType.split("").length<22){
 	// 	console.log("drawing normal big");
 	// 	textAlign(CENTER);
-	// 	text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(getTextSize()*0.4)+yOffset);
+	// 	text(myType, (windowWidth/2)+xOffset, (windowHeight/2)+(getTextSize()*0.4)+yOffset);
 	// }else if(myType.split("").length>=22){
 	// 	textSize(80);
 	// 	console.log("drawing normal small");
 	// 	textAlign(LEFT);
 	// 	// fill(255,0,0);
-	// 	console.log("c-width: "+canvasWidth);
-	// 	console.log("c-height: "+canvasHeight);
+	// 	console.log("c-width: "+windowWidth);
+	// 	console.log("c-height: "+windowHeight);
 	// 	text(myType, 100, 100);
 	// }
 }
@@ -601,12 +617,12 @@ function getText(){
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
+	pg.textFont(font);
 	pg.textAlign(CENTER);
 	pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
-	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	pg.text(myType, (windowWidth/2)+xOffset, (windowHeight/2)+(textsize*0.4)+yOffset);
 
-	// createImage();
 	draw();
 
 }
