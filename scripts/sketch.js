@@ -52,6 +52,8 @@ var layers = [];
 //////////////////////////////////////////////////////////////////////////////////////////////// BASIC JS/JQUERY
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+$("#lightBox").hide();
+
 $("#normal").on("click", function(){ 
 	style = "normal";
 	$(".styleMode").removeClass("active");
@@ -119,6 +121,20 @@ $("#brushScript").on("click", function(){
 	$("#brushScript").addClass("active");
 	font = "Brush Script MT";
 	draw();
+});
+
+$("#save").on("click", function(){ 
+	var can = document.getElementsByTagName("canvas");
+	console.log(can);
+	var dataURL = can[0].toDataURL();
+	console.log(dataURL);
+    $("#imageContainer").attr("src", dataURL);
+    
+	$("#lightBox").show();
+});
+
+$("#lightBox").on("click", function(){
+	$("#lightBox").hide();
 });
 
 var editable = false;

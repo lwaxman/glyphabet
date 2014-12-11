@@ -78,6 +78,9 @@ canvas {
   display: inline-block;
   border-bottom: 1px dashed rgba(128, 131, 150, 0.6);
 }
+#imageContainer {
+  background: white;
+}
 #slider1 input#shapeSize {
   color: blue;
 }
@@ -220,4 +223,22 @@ div.styleMode {
 }
 #newLayer:hover {
   background: rgba(70, 177, 249, 0.2);
+}
+#lightBox {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background: rgba(10, 31, 196, 0.8);
+  z-index: 50;
+}
+#imageContainer {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background-size: white;
+  border: 2px solid #c4c6d6;
+  margin-top: 100px;
+  left: 50%;
+  margin-left: -400px;
 }
