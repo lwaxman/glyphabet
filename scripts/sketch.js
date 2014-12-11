@@ -23,8 +23,8 @@
 var canvasWidth = $(window).width() - 310;
 var canvasHeight = $(window).height() - 10;
 var pg;
-var myType = "TEST";
-var font = "Helvetica";
+var myType = "TEXT";
+var font = "FairplexNarrowBookItalic";
 var insideText = false;
 var style = "normal";
 var minSize = 10;
@@ -213,6 +213,7 @@ function setup(){
 	// myCanvas.parent("canvasContainer");
 
 	pg = createGraphics(canvasWidth,canvasHeight+20);
+	pg.textFont(font);
 	getText();
 	// createImage();
 
@@ -221,13 +222,13 @@ function setup(){
 function createImage(){
 
 	console.log("creatingImage "+canvasWidth+" "+canvasHeight);
-	pg.noStroke();
-	pg.fill(0);
-	pg.textFont(font);
-	pg.textSize(getTextSize());
+	// pg.noStroke();
+	// pg.fill(0);
+	// pg.textFont(font);
+	// pg.textSize(getTextSize());
 	pg.textLeading(getTextSize());
-	pg.textAlign(CENTER);
-	pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
+	// pg.textAlign(CENTER);
+	// pg.text(myType, (canvasWidth/2)+xOffset, (canvasHeight/2)+(textsize*0.4)+yOffset);
 
 	draw();
 
@@ -239,7 +240,7 @@ function createImage(){
 
 function draw(){
 
-	background(255);	
+	background(255,255,255);	
 	noLoop();
 	// console.log("draw(): current layer = "+ currentLayer);
 
@@ -389,8 +390,8 @@ function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
-	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
+	var textYMax = (height/2)+(textsize*0.5) + 50;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -415,8 +416,8 @@ function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
-	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
+	var textYMax = (height/2)+(textsize*0.5) + 50;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -441,8 +442,8 @@ function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOf
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
-	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
+	var textYMax = (height/2)+(textsize*0.5) + 50;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -484,8 +485,8 @@ function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset,
 	var thisWidth = textWidth(myType);
 	var textXMin = (width/2) - (thisWidth/2) - 50;
 	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9);
-	var textYMax = (height/2)+(textsize*0.5) + 10;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
+	var textYMax = (height/2)+(textsize*0.5) + 50;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
