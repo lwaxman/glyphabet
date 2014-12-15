@@ -26,7 +26,7 @@ var myCanvas;
 var windowWidth = $(window).width() - 310;
 var windowHeight = $(window).height() - 10;
 var pg;
-var myType = "TEXT";
+var myType = "hello";
 var font = "Helvetica";
 var insideText = false;
 var style = "normal";
@@ -114,25 +114,33 @@ $("#sansSerif").on("click", function(){
 	$(".fontStyle").removeClass("active");
 	$("#sansSerif").addClass("active");
 	font = "Helvetica";
+	getText();
 	draw();
+	return font;
 });
 $("#serif").on("click", function(){ 
 	$(".fontStyle").removeClass("active");
 	$("#serif").addClass("active");
 	font = "Georgia";
+	getText();
 	draw();
+	return font;
 });
 $("#monospace").on("click", function(){ 
 	$(".fontStyle").removeClass("active");
 	$("#monospace").addClass("active");
 	font = "monospace";
+	getText();
 	draw();
+	return font;
 });
 $("#brushScript").on("click", function(){ 
 	$(".fontStyle").removeClass("active");
 	$("#brushScript").addClass("active");
 	font = "Brush Script MT";
+	getText();
 	draw();
+	return font;
 });
 
 $("#save").on("click", function(){ 
@@ -416,20 +424,6 @@ function drawNormal(xOffset, yOffset, font){
 	// pg.text(myType, (windowWidth/2)-(windowWidth-200)/2, ((windowHeight/2)+(textsize*0.4))-(windowHeight-100)/4 , windowWidth-200, windowHeight-100)
 	text(myType, (windowWidth/2)+xOffset, (windowHeight/2)+(textsize*0.4)+yOffset);
 	// textFont(font);
-	// console.log("drawNormal textSize: " + getTextSize());
-	// if(myType.split("").length<22){
-	// 	console.log("drawing normal big");
-	// 	textAlign(CENTER);
-	// 	text(myType, (windowWidth/2)+xOffset, (windowHeight/2)+(getTextSize()*0.4)+yOffset);
-	// }else if(myType.split("").length>=22){
-	// 	textSize(80);
-	// 	console.log("drawing normal small");
-	// 	textAlign(LEFT);
-	// 	// fill(255,0,0);
-	// 	console.log("c-width: "+windowWidth);
-	// 	console.log("c-height: "+windowHeight);
-	// 	text(myType, 100, 100);
-	// }
 }
 
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
