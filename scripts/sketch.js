@@ -84,6 +84,18 @@ $("#polygons").on("click", function(){
 	$("#polygons").addClass("active");
 	draw();
 });
+$("#lines").on("click", function(){ 
+	style = "lines";
+	$(".styleMode").removeClass("active");
+	$("#lines").addClass("active");
+	draw();
+});
+$("#triangles").on("click", function(){ 
+	style = "triangles";
+	$(".styleMode").removeClass("active");
+	$("#triangles").addClass("active");
+	draw();
+});
 
 $("#gridOn").on("click", function(){ 
 	structure = true;
@@ -423,10 +435,10 @@ function drawNormal(xOffset, yOffset, font){
 function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	// textSize(textsize);
 	var thisWidth = textWidth(myType);
-	var textXMin = (width/2) - (thisWidth/2) - 50;
-	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
-	var textYMax = (height/2)+(textsize*0.5) + 50;
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9) - 150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -449,10 +461,10 @@ function drawCircles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	// textSize(textsize);
 	var thisWidth = textWidth(myType);
-	var textXMin = (width/2) - (thisWidth/2) - 50;
-	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
-	var textYMax = (height/2)+(textsize*0.5) + 50;
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -475,10 +487,10 @@ function drawSquares(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, 
 function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
 	// textSize(textsize);
 	var thisWidth = textWidth(myType);
-	var textXMin = (width/2) - (thisWidth/2) - 50;
-	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
-	var textYMax = (height/2)+(textsize*0.5) + 50;
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -505,6 +517,73 @@ function drawExes(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOf
 	}
 }
 
+function drawLines(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
+	// textSize(textsize);
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
+	var gridGrid = width/thisGridSize;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			var xPos = x;
+			var yPos = y;
+			var textColour = pg.get(xPos, yPos);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var radius = shapeSize/2;
+			stroke(colour);
+			strokeWeight(2);
+			if( textColour[0] == 0 ){
+				if(onGrid){
+					line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
+				}else{
+					// stroke(colour);
+					line(xPos+xOffset+randomOffset-radius, yPos+randomOffset+yOffset-radius, xPos+randomOffset+xOffset+radius, yPos+randomOffset+yOffset+radius);
+				}
+			}
+		}
+	}
+}
+
+function drawTriangles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset, colour){
+	// textSize(textsize);
+	var thisWidth = textWidth(myType);
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
+	var gridGrid = width/thisGridSize;
+	var trackPos = 0;
+	for (var x=textXMin; x<textXMax; x+=gridGrid) {
+		for(var y=textYMin; y<textYMax; y+=gridGrid){
+			trackPos++;
+			var xPos = x;
+			var yPos = y;
+			var textColour = pg.get(xPos, yPos);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var randomOffset = random(-10, 10);
+			var shapeSize = random(minShapeSize, maxShapeSize);
+			var radius = shapeSize/2;
+			// stroke(colour);
+			// strokeWeight(2);
+			if( textColour[0] == 0 ){
+				if(onGrid){
+					// if(trackPos%2==0){
+						triangle(xPos,yPos, xPos,yPos+shapeSize, xPos+shapeSize,yPos)
+					// }
+					// line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
+				}else{
+					// stroke(colour);
+					triangle(xPos+randomOffset,yPos+randomOffset, xPos+randomOffset,yPos+randomOffset+shapeSize, xPos+randomOffset+shapeSize,yPos+randomOffset)
+				}
+			}
+		}
+	}
+}
+
 function polygon(x, y, radius, npoints) {
   var angle = TWO_PI / npoints;
   beginShape();
@@ -518,10 +597,10 @@ function polygon(x, y, radius, npoints) {
 function drawPolygons(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset, yOffset){
 	// textSize(textsize);
 	var thisWidth = textWidth(myType);
-	var textXMin = (width/2) - (thisWidth/2) - 50;
-	var textXMax = (width/2) + (thisWidth/2) + 50;
-	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-50;
-	var textYMax = (height/2)+(textsize*0.5) + 50;
+	var textXMin = (width/2) - (thisWidth/2) - 150;
+	var textXMax = (width/2) + (thisWidth/2) + 150;
+	var textYMin = (height/2)-(textsize*0.5)-(textsize*0.9)-150;
+	var textYMax = (height/2)+(textsize*0.5) + 150;
 	var gridGrid = width/thisGridSize;
 	for (var x=textXMin; x<textXMax; x+=gridGrid) {
 		for(var y=textYMin; y<textYMax; y+=gridGrid){
@@ -577,14 +656,39 @@ function Layer(){
 		textSize(getTextSize());
 		fill(this.colour);
 		if(this.styleMode=="circles"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
 			drawCircles(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="squares"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
 			drawSquares(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="exes"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
 			drawExes(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset, this.colour);
+		}else if(this.styleMode=="lines"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
+			drawLines(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset, this.colour);
+		}else if(this.styleMode=="triangles"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
+			drawTriangles(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="polygons"){
+			$("#gridControl").show();
+			$("#slider1").show();
+			$("#slider2").show();
 			drawPolygons(this.onGrid, this.grid, this.minShapeSize, this.maxShapeSize, this.xOffset, this.yOffset);
 		}else if(this.styleMode=="normal"){
+			$("#gridControl").hide();
+			$("#slider1").hide();
+			$("#slider2").hide();
 			drawNormal(this.xOffset, this.yOffset, this.font);
 		}else{
 			drawNormal(this.xOffset, this.yOffset, this.font);
@@ -630,6 +734,7 @@ function getText(){
 	}
 
 	myType = textBoxResult;
+	pg = createGraphics(windowWidth+300,windowHeight+20);
 	pg.background(255);
 	pg.noStroke();
 	pg.fill(0);
