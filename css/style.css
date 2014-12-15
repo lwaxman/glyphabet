@@ -85,7 +85,7 @@ canvas {
   color: blue;
 }
 #styleControl div {
-  width: 47px;
+  width: 32px;
   height: 30px;
   display: inline-block;
 }
@@ -97,8 +97,7 @@ canvas {
   border-top: 1px dashed rgba(128, 131, 150, 0.6);
   border-bottom: 1px dashed rgba(128, 131, 150, 0.6);
 }
-#fontMenu li {
-  width: 60px;
+#fontMenu img {
   height: 30px;
   vertical-align: top;
   line-height: 20px;

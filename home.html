@@ -2,13 +2,13 @@
     <head>
         <meta charset="utf-8">
         <title>INDEX</title>
-	    <link rel="stylesheet" href="css/mockUp.css">
+	    <link rel="stylesheet" href="css/home.css">
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
     </head>
     <body>
     	<div id="content">
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-01.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -16,7 +16,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-03.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -24,7 +24,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-02.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -32,7 +32,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-04.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -40,7 +40,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-05.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -48,7 +48,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-07.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -56,7 +56,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-06.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -64,7 +64,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-08.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeFalse.png" alt="theme">
@@ -72,7 +72,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-09.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -80,7 +80,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-10.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -88,7 +88,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-11.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -96,7 +96,7 @@
     			</div>
     		</div>
     		<div class="contentBox">
-    			<img src="http://fillmurray.com/400/400" alt="content">
+    			<img src="images/example-12.jpg" alt="content">
     			<div class="info">
     				<p>nameHere</p>
     				<img width="20" height="20" src="images/themeTrue.png" alt="theme">
@@ -115,6 +115,17 @@
     	</div>
     
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="js/main.js"></script>
+        <script>    
+            // $(".info").hide();
+
+            $(".contentBox").on("mouseover", function(){
+                $(this).find(".info").show();
+            })
+
+             $(".contentBox").on("mouseleave", function(){
+                $(this).find(".info").hide();
+            })
+
+        </script>
     </body>
 </html>

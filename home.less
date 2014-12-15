@@ -42,16 +42,16 @@
 .contentBox img{
 	width: 100%;
 	height: auto;
+	vertical-align: bottom;
 	z-index: 1;
 }
 
 .info{
 	// position: absolute;
+	display: block;
 	width: 100%;
-	top: -60px;
-	margin-top: -60px;
+	height: -10px;
 	font-size: 16px;
-	padding: 10px 0;
 	/*display: none;*/
 	color: @lightBlue;
 	// background: fade(@lightBlue, 60%);
@@ -61,12 +61,15 @@
 
 .info p,
 .info img{
-	display: inline-block;
+	// padding: 0px 0;
+	margin-top: -60px;
 	vertical-align: middle;
+	display: inline-block;
 }
 
 .info p{
 	margin-left: 20px;
+	// margin-top: 20px;
 	width: 65%;
 }
 

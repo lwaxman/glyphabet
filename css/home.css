@@ -30,14 +30,14 @@ html {
 .contentBox img {
   width: 100%;
   height: auto;
+  vertical-align: bottom;
   z-index: 1;
 }
 .info {
+  display: block;
   width: 100%;
-  top: -60px;
-  margin-top: -60px;
+  height: -10px;
   font-size: 16px;
-  padding: 10px 0;
   /*display: none;*/
   color: #2d3ae4;
   background: #3789db;
@@ -45,8 +45,9 @@ html {
 }
 .info p,
 .info img {
-  display: inline-block;
+  margin-top: -60px;
   vertical-align: middle;
+  display: inline-block;
 }
 .info p {
   margin-left: 20px;

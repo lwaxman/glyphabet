@@ -572,12 +572,12 @@ function drawTriangles(onGrid, thisGridSize, minShapeSize, maxShapeSize, xOffset
 			if( textColour[0] == 0 ){
 				if(onGrid){
 					// if(trackPos%2==0){
-						triangle(xPos,yPos, xPos,yPos+shapeSize, xPos+shapeSize,yPos)
+						triangle(xPos+xOffset,yPos+yOffset, xPos+xOffset,yPos+yOffset+shapeSize, xPos+xOffset+shapeSize,yPos+yOffset)
 					// }
 					// line(xPos+xOffset-radius, yPos+yOffset-radius, xPos+xOffset+radius, yPos+yOffset+radius);
 				}else{
 					// stroke(colour);
-					triangle(xPos+randomOffset,yPos+randomOffset, xPos+randomOffset,yPos+randomOffset+shapeSize, xPos+randomOffset+shapeSize,yPos+randomOffset)
+					triangle(xPos+xOffset+randomOffset,yPos+yOffset+randomOffset, xPos+xOffset+randomOffset,yPos+yOffset+randomOffset+shapeSize, xPos+xOffset+randomOffset+shapeSize,yPos+yOffset+randomOffset)
 				}
 			}
 		}
