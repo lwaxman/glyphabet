@@ -9,7 +9,7 @@ html {
   position: fixed;
   width: 100%;
   height: 75px;
-  background: blue;
+  background: #0a1fc4;
   font-size: 20px;
   color: white;
 }
@@ -30,15 +30,18 @@ html {
 .contentBox img {
   width: 100%;
   height: auto;
+  z-index: 1;
 }
 .info {
   width: 100%;
-  margin: 0;
+  top: -60px;
+  margin-top: -60px;
   font-size: 16px;
   padding: 10px 0;
   /*display: none;*/
-  color: white;
-  background: yellow;
+  color: #2d3ae4;
+  background: #3789db;
+  z-index: 10;
 }
 .info p,
 .info img {
@@ -47,9 +50,47 @@ html {
 }
 .info p {
   margin-left: 20px;
-  width: 60%;
+  width: 65%;
 }
 .info img {
-  width: 30px;
+  width: 10%;
   height: auto;
+}
+@media (max-width: 1000px) {
+  #header {
+    background: green;
+  }
+  .contentBox {
+    width: 49%;
+  }
+  .info {
+    margin-top: -75px;
+  }
+  .info p {
+    font-size: 20px;
+    margin-left: 20px;
+    width: 70%;
+  }
+  .info img {
+    width: 9%;
+  }
+}
+@media (max-width: 650px) {
+  #header {
+    background: yellow;
+  }
+  .contentBox {
+    width: 100%;
+  }
+  .info {
+    margin-top: -75px;
+  }
+  .info p {
+    font-size: 30px;
+    margin-left: 25px;
+    width: 72%;
+  }
+  .info img {
+    width: 9%;
+  }
 }
